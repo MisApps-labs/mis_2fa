@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-or-later
+  Copyright (C) 2026 ferlagod
+  Mis 2FA — https://github.com/ferlagod/mis_2fa
+-->
+<!-- Icono de acceso directo: círculo azul del logo con un visor QR crema. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#7F99B9"
+        android:pathData="M24,24m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0" />
+    <path
+        android:fillColor="#FFFBF5"
+        android:pathData="M14,14h7v2.5h-4.5v4.5H14zM27,14h7v7h-2.5v-4.5H27zM14,27h2.5v4.5H21V34h-7zM31.5,27H34v7h-7v-2.5h4.5zM19,19h4v4h-4zM25,19h4v4h-4zM19,25h4v4h-4zM25,25h4v4h-4z" />
+</vector>

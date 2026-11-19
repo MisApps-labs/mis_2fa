@@ -1,0 +1,23 @@
+<b>Mis 2FA</b> generates the two-step verification codes websites ask for when you sign in, like Google Authenticator or Ente Auth, but it's <b>free software</b> and keeps an <b>end-to-end encrypted</b> copy on your own Nextcloud server. If you lose your phone, you don't lose your codes.
+
+<b>No ads, no tracking</b>
+No ads, no telemetry, no mandatory accounts and no Google services. Works offline; sync is optional. 100% free code under the GNU GPLv3.
+
+<b>Security</b>
+• Accounts encrypted on your phone with an Android Keystore key that can't leave the device.
+• Nextcloud backup encrypted with AES-256-GCM and your master password: the server only sees unreadable data.
+• Lock with fingerprint, face or PIN, and a new check before exporting or showing a QR code.
+• Screenshots blocked, optional hidden codes and a clipboard that clears itself.
+
+<b>So you never lose a code</b>
+• Automatic sync that only adds: an account missing on another device is never deleted.
+• Trash with no automatic emptying, and "Undo".
+• Automatic internal snapshots and password-protected encrypted export.
+
+<b>Easy to use</b>
+• Scan the QR code, read it from a screenshot or type the key.
+• Import from Google Authenticator, Aegis, 2FAS and Ente Auth.
+• Tap a code to copy it and see the next one when the current code is about to expire.
+• TOTP, HOTP and Steam Guard.
+• Light, dark or pure black AMOLED theme.
+• In English, Spanish, French, German and Italian.

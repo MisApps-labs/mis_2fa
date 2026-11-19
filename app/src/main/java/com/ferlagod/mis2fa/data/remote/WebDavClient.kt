@@ -1,0 +1,134 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 ferlagod
+// Mis 2FA — https://github.com/ferlagod/mis_2fa
+
+package com.ferlagod.mis2fa.data.remote
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Credentials
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+
+/** Error HTTP devuelto por el servidor WebDAV. */
+open class WebDavException(val code: Int, message: String) : IOException(message)
+
+/** 401/403: usuario o contraseña de aplicación incorrectos. */
+class WebDavAuthException(code: Int) : WebDavException(code, "Usuario o contraseña de aplicación incorrectos ($code)")
+
+/** 409 al crear la carpeta: la ruta WebDAV no existe (usuario o URL mal escritos). */
+class WebDavPathNotFoundException : WebDavException(409, "La ruta WebDAV no existe")
+
+/** 412: el fichero remoto cambió desde la última lectura (control de concurrencia optimista). */
+class WebDavPreconditionFailedException : WebDavException(412, "El fichero cambió en el servidor")
+
+/** Fichero descargado junto con su ETag. */
+class RemoteFile(val bytes: ByteArray, val etag: String?)
+
+/**
+ * Cliente WebDAV mínimo para Nextcloud / ownCloud (RFC 4918).
+ *
+ * Usa `If-Match` / `If-None-Match` en las subidas para no sobrescribir nunca un cambio
+ * remoto que no hayamos visto.
+ */
+class WebDavClient(
+    rootUrl: String,
+    username: String,
+    appPassword: String,
+    private val http: OkHttpClient = sharedHttpClient
+) {
+    private val rootUrl: String = if (rootUrl.endsWith("/")) rootUrl else "$rootUrl/"
+    private val authHeader: String = Credentials.basic(username, appPassword, Charsets.UTF_8)
+
+    companion object {
+        private const val USER_AGENT = "Mis2FA-Android"
+        private val XML = "application/xml; charset=utf-8".toMediaType()
+        private const val PROPFIND_BODY = """<?xml version="1.0" encoding="utf-8" ?>
+<d:propfind xmlns:d="DAV:"><d:prop><d:resourcetype/><d:getetag/></d:prop></d:propfind>"""
+
+        val sharedHttpClient: OkHttpClient by lazy {
+            OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(40, TimeUnit.SECONDS)
+                .writeTimeout(40, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                // Nunca seguir una redirección a otro sitio con las credenciales.
+                .followRedirects(false)
+                .followSslRedirects(false)
+                .build()
+        }
+
+        fun normalizeEtag(raw: String?): String? {
+            if (raw.isNullOrBlank()) return null
+            return raw.trim().removePrefix("W/").trim('"').takeIf { it.isNotBlank() }
+        }
+    }
+
+    private fun request(url: String) = Request.Builder()
+        .url(url)
+        .header("Authorization", authHeader)
+        .header("User-Agent", USER_AGENT)
+
+    private fun Response.throwIfAuthError() {
+        if (code == 401 || code == 403) throw WebDavAuthException(code)
+    }
+
+    private fun fileUrl(name: String) = rootUrl + name.removePrefix("/")
+
+    /** Comprueba las credenciales y crea la carpeta de la app si no existe. */
+    suspend fun ensureRootFolder(): Unit = withContext(Dispatchers.IO) {
+        val check = request(rootUrl)
+            .method("PROPFIND", PROPFIND_BODY.toRequestBody(XML))
+            .header("Depth", "0")
+            .build()
+        http.newCall(check).execute().use { response ->
+            response.throwIfAuthError()
+            if (response.isSuccessful) return@withContext
+            if (response.code != 404) throw WebDavException(response.code, "No se pudo acceder a la carpeta (${response.code})")
+        }
+        http.newCall(request(rootUrl).method("MKCOL", null).build()).execute().use { response ->
+            response.throwIfAuthError()
+            if (response.isSuccessful || response.code == 405) return@withContext // 405 = ya existe
+            if (response.code == 409) throw WebDavPathNotFoundException()
+            throw WebDavException(response.code, "No se pudo crear la carpeta (${response.code})")
+        }
+    }
+
+    /** Descarga un fichero con su ETag; null si no existe. */
+    suspend fun download(name: String): RemoteFile? = withContext(Dispatchers.IO) {
+        http.newCall(request(fileUrl(name)).get().header("Cache-Control", "no-cache").build()).execute().use { response ->
+            response.throwIfAuthError()
+            if (response.code == 404) return@withContext null
+            if (!response.isSuccessful) throw WebDavException(response.code, "Error al descargar $name (${response.code})")
+            RemoteFile(response.body?.bytes() ?: ByteArray(0), normalizeEtag(response.header("OC-ETag") ?: response.header("ETag")))
+        }
+    }
+
+    /**
+     * Sube un fichero.
+     *
+     * @param ifMatch solo sobrescribe si el ETag remoto coincide.
+     * @param ifNoneMatch solo lo crea si NO existe.
+     * @throws WebDavPreconditionFailedException si la condición no se cumple (412).
+     */
+    suspend fun upload(
+        name: String,
+        content: String,
+        ifMatch: String? = null,
+        ifNoneMatch: Boolean = false
+    ): Unit = withContext(Dispatchers.IO) {
+        val builder = request(fileUrl(name)).put(content.toByteArray(Charsets.UTF_8).toRequestBody("application/json; charset=utf-8".toMediaType()))
+        if (ifMatch != null) builder.header("If-Match", "\"$ifMatch\"")
+        else if (ifNoneMatch) builder.header("If-None-Match", "*")
+        http.newCall(builder.build()).execute().use { response ->
+            response.throwIfAuthError()
+            if (response.code == 412) throw WebDavPreconditionFailedException()
+            if (!response.isSuccessful) throw WebDavException(response.code, "Error al subir $name (${response.code})")
+        }
+    }
+}

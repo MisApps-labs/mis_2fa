@@ -1,0 +1,1 @@
+Códigos 2FA libres y cifrados, con copia en tu Nextcloud para no perderlos

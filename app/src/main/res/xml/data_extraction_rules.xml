@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-or-later
+  Copyright (C) 2026 ferlagod
+  Mis 2FA — https://github.com/ferlagod/mis_2fa
+-->
+<!--
+  Android 12+: ni copia en la nube ni transferencia entre dispositivos. Los datos van cifrados con
+  una clave del Keystore de ESTE dispositivo y serían ilegibles en otro. Para pasar los códigos a
+  un móvil nuevo usa la sincronización con Nextcloud o una copia de seguridad cifrada.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+    </device-transfer>
+</data-extraction-rules>

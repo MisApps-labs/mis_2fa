@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-or-later
+  Copyright (C) 2026 ferlagod
+  Mis 2FA — https://github.com/ferlagod/mis_2fa
+-->
+<resources>
+    <string name="cancel">Abbrechen</string>
+    <string name="close">Schließen</string>
+    <string name="save">Speichern</string>
+    <string name="undo">Rückgängig</string>
+    <string name="unlock">Entsperren</string>
+    <string name="change">Ändern</string>
+    <string name="export">Exportieren</string>
+    <string name="import_action">Importieren</string>
+    <string name="password">Passwort</string>
+    <string name="password_repeat">Passwort wiederholen</string>
+    <string name="working">Einen Moment …</string>
+    <string name="preview">Vorschau</string>
+    <string name="cd_back">Zurück</string>
+    <string name="cd_show_password">Passwort anzeigen</string>
+    <string name="cd_hide_password">Passwort verbergen</string>
+    <string name="hint_dismiss">Schließen</string>
+
+    <string name="shortcut_scan_short">QR scannen</string>
+    <string name="shortcut_scan_long">QR-Code scannen</string>
+
+    <string name="app_locked_title">Mis 2FA ist gesperrt</string>
+    <string name="app_locked_message">Entsperre mit Fingerabdruck, Gesicht oder Geräte-PIN, um deine Codes zu sehen.</string>
+    <string name="app_lock_prompt_title">Mis 2FA entsperren</string>
+    <string name="app_lock_prompt_subtitle">Bestätige, dass du es bist</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Überspringen</string>
+    <string name="onboarding_next">Weiter</string>
+    <string name="onboarding_start">Los geht\'s</string>
+    <string name="onboarding_welcome_title">Willkommen bei Mis\u00A02FA</string>
+    <string name="onboarding_welcome_message">Deine Codes für die Zwei-Faktor-Authentifizierung, privat und frei. Ohne Werbung, ohne Tracking und ohne Konto.</string>
+    <string name="onboarding_how_title">So funktioniert\'s</string>
+    <string name="onboarding_how_message">Wenn eine Website dich bittet, die Zwei-Faktor-Authentifizierung zu aktivieren, scanne den angezeigten QR-Code. Danach erzeugt Mis 2FA alle 30 Sekunden einen neuen Code: Gib ihn bei der Anmeldung ein. Tippe auf einen Code, um ihn zu kopieren.</string>
+    <string name="onboarding_private_title">Deine Codes gehören dir</string>
+    <string name="onboarding_private_message">Sie werden verschlüsselt auf diesem Gerät gespeichert und verlassen es nur, wenn du es willst. Außerdem kannst du die App mit Fingerabdruck, Gesicht oder PIN sperren.</string>
+    <string name="onboarding_backup_title">Verliere nicht den Zugang</string>
+    <string name="onboarding_backup_message">Wenn du dein Handy verlierst, verlierst du deine Codes. Bewahre die Wiederherstellungscodes jeder Website auf und synchronisiere mit deiner eigenen Nextcloud (Ende-zu-Ende-verschlüsselt) oder exportiere in den Einstellungen eine verschlüsselte Sicherung.</string>
+    <string name="settings_tutorial">Tutorial ansehen</string>
+    <string name="settings_tutorial_desc">Wie Mis 2FA funktioniert und wie du deine Codes nicht verlierst</string>
+
+    <string name="welcome_title">Füge dein erstes Konto hinzu</string>
+    <string name="welcome_message">Wenn eine Website dich bittet, die Zwei-Faktor-Authentifizierung einzurichten, scanne den angezeigten QR-Code oder gib den Einrichtungsschlüssel ein.</string>
+    <string name="welcome_sync_hint">Nutzt du Mis 2FA schon auf einem anderen Gerät? Verbinde dasselbe Nextcloud-Konto, um deine Codes zurückzubekommen.</string>
+    <string name="add_account">Konto hinzufügen</string>
+    <string name="add_scan_qr">QR-Code scannen</string>
+    <string name="add_scan_qr_desc">Mit der Kamera</string>
+    <string name="add_from_image">QR-Code aus einem Bild</string>
+    <string name="add_from_image_desc">Ein Screenshot oder ein Foto</string>
+    <string name="add_from_image_short">Aus Bild</string>
+    <string name="add_manual">Schlüssel eingeben</string>
+    <string name="add_manual_desc">Gib den Schlüssel der Website ein</string>
+    <string name="add_manual_short">Schlüssel eingeben</string>
+    <string name="add_import">Aus einer anderen App importieren</string>
+    <string name="add_import_desc">Google Authenticator, Aegis, 2FAS, Ente Auth …</string>
+    <string name="search_hint">Konten suchen</string>
+    <string name="search_no_results">Keine Konten gefunden</string>
+    <string name="cd_clear_search">Suche löschen</string>
+    <string name="cd_copy_code">Code kopieren</string>
+    <string name="cd_more_options">Weitere Optionen</string>
+    <string name="cd_next_hotp">Nächsten Code erzeugen</string>
+    <string name="cd_sync_now">Synchronisiert. Tippen, um jetzt zu synchronisieren</string>
+    <string name="cd_sync_error">Synchronisierungsfehler</string>
+    <string name="code_copied">Code kopiert</string>
+    <string name="hint_sync">Deine Codes sind nur auf diesem Gerät. Wenn du es verlierst, verlierst du den Zugang zu deinen Konten. Aktiviere die Nextcloud-Synchronisierung, damit das nie passiert.</string>
+    <string name="hint_sync_action">Synchronisierung einrichten</string>
+    <string name="hint_app_lock">Schütze deine Codes mit Fingerabdruck, Gesicht oder Geräte-PIN.</string>
+    <string name="hint_app_lock_action">Sperre aktivieren</string>
+    <string name="hint_gestures">Tippe auf einen Code, um ihn zu kopieren. Halte ein Konto gedrückt für weitere Optionen.</string>
+    <string name="review_settings">Prüfen</string>
+    <string name="enter_master_password">Master-Passwort eingeben</string>
+
+    <string name="action_copy">Code kopieren</string>
+    <string name="action_copy_next">Nächsten Code kopieren</string>
+    <string name="action_pin">Oben anheften</string>
+    <string name="action_unpin">Loslösen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_show_qr">QR-Code anzeigen</string>
+    <string name="action_show_qr_desc">Um dieses Konto auf ein anderes Gerät zu übertragen</string>
+    <string name="action_trash">In den Papierkorb</string>
+    <string name="action_restore">Wiederherstellen</string>
+    <string name="action_delete_forever">Endgültig löschen</string>
+    <string name="qr_warning">Wer diesen Code scannt, kann deine Codes erzeugen. Teile ihn nicht.</string>
+    <string name="account_added">Konto hinzugefügt: %1$s</string>
+    <string name="account_duplicate">%1$s ist bereits in Mis 2FA</string>
+    <string name="account_saved">Änderungen gespeichert</string>
+    <plurals name="moved_to_trash">
+        <item quantity="one">In den Papierkorb verschoben</item>
+        <item quantity="other">%d Konten in den Papierkorb verschoben</item>
+    </plurals>
+    <plurals name="accounts_deleted">
+        <item quantity="one">Konto gelöscht</item>
+        <item quantity="other">%d Konten gelöscht</item>
+    </plurals>
+
+    <string name="edit_account">Konto bearbeiten</string>
+    <string name="field_issuer">Dienst</string>
+    <string name="field_issuer_hint">GitHub, Google, deine Bank …</string>
+    <string name="field_account">Konto</string>
+    <string name="field_account_hint">du@beispiel.de</string>
+    <string name="field_secret">Einrichtungsschlüssel</string>
+    <string name="field_secret_help">Der Schlüssel neben dem QR-Code. Leerzeichen spielen keine Rolle.</string>
+    <string name="advanced_options">Erweiterte Optionen</string>
+    <string name="field_type">Typ</string>
+    <string name="type_totp">Zeitbasiert</string>
+    <string name="type_hotp">Zähler</string>
+    <string name="type_steam">Steam</string>
+    <string name="field_algorithm">Algorithmus</string>
+    <string name="field_digits">Ziffern</string>
+    <string name="field_period">Intervall (Sekunden)</string>
+    <string name="field_counter">Zähler</string>
+    <string name="error_name_required">Gib den Dienst oder den Kontonamen ein</string>
+    <string name="error_secret_invalid">Dieser Schlüssel ist ungültig. Verwende nur die Buchstaben A–Z und die Ziffern 2–7.</string>
+
+    <string name="scan_title">QR-Code scannen</string>
+    <string name="scan_instructions">Richte die Kamera auf den QR-Code</string>
+    <string name="scan_not_otp">Dieser QR-Code enthält kein Zwei-Faktor-Konto</string>
+    <string name="scan_batch_progress">%1$d von %2$d QR-Codes gescannt. Scanne den nächsten.</string>
+    <string name="scan_image_no_qr">In diesem Bild wurde kein QR-Code gefunden</string>
+    <string name="camera_permission_title">Kamerazugriff erforderlich</string>
+    <string name="camera_permission_message">Erlaube den Kamerazugriff, um QR-Codes zu scannen. Du kannst Konten auch aus einem Bild oder per Schlüssel hinzufügen.</string>
+    <string name="open_app_settings">Einstellungen öffnen</string>
+
+    <string name="trash_title">Papierkorb</string>
+    <string name="trash_empty">Papierkorb leeren</string>
+    <string name="trash_empty_title">Der Papierkorb ist leer</string>
+    <string name="trash_empty_message">Gelöschte Konten bleiben hier, bis du sie endgültig löschst.</string>
+    <string name="trash_info">Bevor du ein Konto endgültig löschst, deaktiviere die Zwei-Faktor-Authentifizierung auf der Website oder stelle sicher, dass du dich anders anmelden kannst.</string>
+    <string name="trash_deleted_when">Gelöscht · %1$s</string>
+    <string name="delete_forever_title">Endgültig löschen?</string>
+    <string name="delete_forever_message">%1$s wird von all deinen Geräten gelöscht. Du kannst dann keine Codes mehr dafür erzeugen.</string>
+    <string name="trash_empty_confirm_title">Papierkorb leeren?</string>
+    <string name="trash_empty_confirm_message">Diese Konten werden von all deinen Geräten gelöscht. Das kann nicht rückgängig gemacht werden.</string>
+    <plurals name="trash_count">
+        <item quantity="one">%d Konto</item>
+        <item quantity="other">%d Konten</item>
+    </plurals>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="section_sync">Synchronisierung</string>
+    <string name="section_security">Sicherheit</string>
+    <string name="section_appearance">Darstellung</string>
+    <string name="section_backup">Sicherungen</string>
+    <string name="section_language">Sprache</string>
+    <string name="section_about">Über</string>
+    <string name="app_lock">App-Sperre</string>
+    <string name="app_lock_desc">Beim Öffnen Fingerabdruck, Gesicht oder Geräte-PIN verlangen</string>
+    <string name="app_lock_unavailable">Richte zuerst eine Displaysperre auf dem Gerät ein</string>
+    <string name="lock_timeout">Sperren</string>
+    <string name="lock_immediately">Sofort</string>
+    <string name="lock_one_minute">Nach 1 Minute im Hintergrund</string>
+    <string name="lock_five_minutes">Nach 5 Minuten im Hintergrund</string>
+    <string name="block_screenshots">Screenshots blockieren</string>
+    <string name="block_screenshots_desc">Verbirgt die App auch in den letzten Apps</string>
+    <string name="hide_codes">Codes verbergen</string>
+    <string name="hide_codes_desc">Codes erst beim Antippen anzeigen</string>
+    <string name="clipboard_clear">Zwischenablage leeren</string>
+    <string name="clipboard_never">Nie</string>
+    <plurals name="clipboard_seconds">
+        <item quantity="one">Nach %d Sekunde</item>
+        <item quantity="other">Nach %d Sekunden</item>
+    </plurals>
+    <string name="theme">Design</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="amoled_mode">Reines Schwarz</string>
+    <string name="amoled_mode_desc">Spart im dunklen Design Akku auf OLED-Bildschirmen</string>
+    <string name="show_account_name">Kontonamen anzeigen</string>
+    <string name="show_next_code">Nächsten Code anzeigen</string>
+    <string name="show_next_code_desc">Praktisch, wenn der aktuelle Code gleich abläuft</string>
+    <string name="sort_by">Sortieren nach</string>
+    <string name="sort_issuer">Dienst (A–Z)</string>
+    <string name="sort_account">Konto (A–Z)</string>
+    <string name="sort_newest">Neueste zuerst</string>
+    <string name="sort_oldest">Älteste zuerst</string>
+    <string name="language_system">Systemsprache</string>
+    <string name="about_version">Mis 2FA %1$s</string>
+    <string name="about_license">Freie Software unter der GNU GPL v3 oder später. Wird OHNE JEGLICHE GEWÄHRLEISTUNG bereitgestellt.</string>
+    <string name="source_code">Quellcode</string>
+    <string name="license">Lizenz</string>
+
+    <string name="backup_desc">Bewahre eine Kopie deiner Konten an einem sicheren Ort außerhalb deines Telefons auf.</string>
+    <string name="export_encrypted">Verschlüsselte Sicherung exportieren</string>
+    <string name="export_encrypted_desc">Mit Passwort geschützt. Empfohlen.</string>
+    <string name="export_password_message">Wähle ein Passwort für diese Sicherung. Du brauchst es zum Wiederherstellen.</string>
+    <string name="export_plain">Als unverschlüsselten Text exportieren</string>
+    <string name="export_plain_desc">otpauth://-Links, kompatibel mit anderen Apps</string>
+    <string name="export_plain_warning_title">Unverschlüsselter Export</string>
+    <string name="export_plain_warning">Wer diese Datei bekommt, kann alle deine Codes erzeugen. Nutze sie nur zum Wechsel in eine andere App und lösche sie danach.</string>
+    <string name="export_plain_confirm">Verstanden, exportieren</string>
+    <string name="export_failed">Die Sicherung konnte nicht exportiert werden</string>
+    <plurals name="export_done">
+        <item quantity="one">%d Konto exportiert</item>
+        <item quantity="other">%d Konten exportiert</item>
+    </plurals>
+    <string name="import_title">Importieren</string>
+    <string name="import_desc">Mis-2FA-Sicherung, Aegis, 2FAS, Ente Auth (unverschlüsselter Text) oder otpauth://-Links</string>
+    <string name="import_encrypted_title">Verschlüsselte Sicherung</string>
+    <string name="import_encrypted_message">Gib das Passwort ein, das du beim Export dieser Sicherung gewählt hast.</string>
+    <string name="import_unknown_format">Diese Datei ist keine unterstützte Sicherung</string>
+    <string name="import_aegis_encrypted">Diese Aegis-Sicherung ist verschlüsselt. Exportiere sie in Aegis erneut ohne Verschlüsselung und importiere diese Datei.</string>
+    <string name="import_2fas_encrypted">Diese 2FAS-Sicherung ist verschlüsselt. Exportiere sie in 2FAS erneut ohne Passwort und importiere diese Datei.</string>
+    <string name="import_nothing">Keine Konten gefunden</string>
+    <string name="import_summary">Importiert: %1$d. Übersprungen (doppelt oder ungültig): %2$d</string>
+    <plurals name="import_added">
+        <item quantity="one">%d Konto importiert</item>
+        <item quantity="other">%d Konten importiert</item>
+    </plurals>
+
+    <string name="nextcloud_connected">Mit Nextcloud verbunden</string>
+    <string name="local_mode">Nur auf diesem Gerät</string>
+    <string name="local_mode_desc">Deine Codes sind nirgendwo gesichert</string>
+    <string name="status_syncing">Wird synchronisiert …</string>
+    <string name="status_synced">Synchronisiert · %1$s</string>
+    <string name="status_pending">Noch nicht synchronisiert</string>
+    <string name="sync_explanation">Deine Konten werden auf diesem Telefon mit deinem Master-Passwort verschlüsselt, bevor sie hochgeladen werden. Deine Nextcloud speichert nur unlesbare Daten.</string>
+    <string name="field_server">Server</string>
+    <string name="field_user">Benutzer</string>
+    <string name="field_app_password">App-Passwort</string>
+    <string name="field_app_password_help">Erstelle es in Nextcloud: Einstellungen → Sicherheit → Geräte &amp; Sitzungen</string>
+    <string name="field_master_password">Master-Passwort</string>
+    <string name="field_master_password_help">Verschlüsselt deine Codes. Verwende auf allen Geräten dasselbe.</string>
+    <string name="master_password_warning">Wenn du das Master-Passwort vergisst, kann die Sicherung auf dem Server nicht wiederhergestellt werden. Bewahre es sicher auf.</string>
+    <string name="error_required_fields">Fülle alle Felder aus</string>
+    <string name="connect_and_encrypt">Verbinden und verschlüsseln</string>
+    <string name="connecting">Verbinde …</string>
+    <string name="sync_help_link">Wie verbinde ich mich?</string>
+    <string name="sync_now">Jetzt synchronisieren</string>
+    <string name="change_master_password">Master-Passwort ändern</string>
+    <string name="change_password_message">Die Sicherung in Nextcloud wird mit dem neuen Passwort neu verschlüsselt. Deine anderen Geräte fragen danach.</string>
+    <string name="password_changed">Master-Passwort geändert</string>
+    <string name="reenter_password_message">Das Master-Passwort wurde auf einem anderen Gerät geändert. Gib das neue ein, um weiter zu synchronisieren.</string>
+    <string name="disconnect">Trennen</string>
+    <string name="disconnect_title">Nextcloud trennen?</string>
+    <string name="disconnect_message">Deine Codes bleiben auf diesem Gerät und die verschlüsselte Sicherung bleibt in deiner Nextcloud, aber Änderungen werden nicht mehr synchronisiert.</string>
+    <string name="sync_disconnected">Nextcloud getrennt</string>
+    <string name="sync_error_auth">Benutzer oder App-Passwort falsch</string>
+    <string name="sync_error_network">Keine Verbindung zum Server</string>
+    <string name="sync_error_path">Server nicht gefunden. Prüfe Adresse und Benutzer.</string>
+    <string name="sync_error_wrong_password">Falsches Master-Passwort</string>
+    <string name="sync_error_password_changed">Das Master-Passwort wurde auf einem anderen Gerät geändert</string>
+    <string name="sync_error_remote_corrupt">Die Sicherung auf dem Server ist unlesbar. Sie wurde nicht verändert.</string>
+    <string name="sync_error_https">Aus Sicherheitsgründen werden nur https://-Server unterstützt</string>
+    <string name="sync_error_server">Der Server hat nicht korrekt geantwortet. Neuer Versuch später.</string>
+    <string name="sync_error_unknown">Synchronisierung fehlgeschlagen</string>
+
+    <plurals name="error_password_short">
+        <item quantity="one">Verwende mindestens %d Zeichen</item>
+        <item quantity="other">Verwende mindestens %d Zeichen</item>
+    </plurals>
+    <string name="error_password_mismatch">Die Passwörter stimmen nicht überein</string>
+    <string name="error_save_failed">Die Änderungen konnten nicht gespeichert werden</string>
+    <string name="error_vault_unreadable">Deine Konten auf diesem Gerät können nicht geöffnet werden</string>
+    <string name="error_vault_unreadable_long">Deine Konten auf diesem Gerät können nicht geöffnet werden. Es wurde nichts gelöscht. Wenn du die Nextcloud-Synchronisierung nutzt oder eine Sicherung hast, kannst du sie durch Neuinstallation der App wiederherstellen.</string>
+    <string name="link_add_title">Konto hinzufügen?</string>
+    <string name="link_add_message">%1$s wird zu Mis 2FA hinzugefügt. Füge nur Konten hinzu, die du selbst eingerichtet hast.</string>
+    <plurals name="link_add_batch">
+        <item quantity="one">%d Konto wird zu Mis 2FA hinzugefügt.</item>
+        <item quantity="other">%d Konten werden zu Mis 2FA hinzugefügt.</item>
+    </plurals>
+    <string name="error_wrong_password">Falsches Passwort</string>
+    <string name="time_just_now">Gerade eben</string>
+</resources>

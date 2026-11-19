@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 ferlagod
+# Mis 2FA — https://github.com/ferlagod/mis_2fa
+
+# Reglas R8 de Mis 2FA.
+
+# OkHttp: plataformas TLS opcionales que no existen en Android.
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**

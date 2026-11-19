@@ -1,0 +1,1 @@
+Primera versión: códigos TOTP/HOTP/Steam, escáner QR libre, importación desde Google Authenticator, Aegis, 2FAS y Ente Auth, copia cifrada y sincronización cifrada con Nextcloud.

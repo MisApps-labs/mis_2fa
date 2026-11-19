@@ -1,0 +1,23 @@
+<b>Mis 2FA</b> genera los códigos de verificación en dos pasos que te piden las webs al iniciar sesión, como Google Authenticator o Ente Auth, pero es <b>software libre</b> y guarda una copia <b>cifrada de extremo a extremo</b> en tu propio servidor Nextcloud. Si pierdes el móvil, tus códigos no se pierden.
+
+<b>Sin publicidad ni seguimiento</b>
+Sin anuncios, sin telemetría, sin cuentas obligatorias y sin servicios de Google. Funciona sin conexión; la sincronización es opcional. Código 100 % libre bajo licencia GNU GPLv3.
+
+<b>Seguridad</b>
+• Cuentas cifradas en el teléfono con una clave del Android Keystore que no puede salir del dispositivo.
+• Copia en Nextcloud cifrada con AES-256-GCM y tu contraseña maestra: el servidor solo ve datos ilegibles.
+• Bloqueo con huella, cara o PIN, y nueva comprobación antes de exportar o mostrar un QR.
+• Capturas de pantalla bloqueadas, códigos ocultables y portapapeles que se borra solo.
+
+<b>Para no perder nunca un código</b>
+• Sincronización automática que solo suma: una cuenta que falta en otro dispositivo nunca se borra.
+• Papelera sin vaciado automático y "Deshacer".
+• Copias internas automáticas y exportación cifrada con contraseña.
+
+<b>Fácil de usar</b>
+• Escanea el QR, léelo de una captura o escribe la clave.
+• Importa desde Google Authenticator, Aegis, 2FAS y Ente Auth.
+• Toca un código para copiarlo y mira el siguiente cuando al actual le quedan pocos segundos.
+• TOTP, HOTP y Steam Guard.
+• Tema claro, oscuro o negro puro AMOLED.
+• En español, inglés, francés, alemán e italiano.

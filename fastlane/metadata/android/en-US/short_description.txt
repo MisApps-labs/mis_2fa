@@ -1,0 +1,1 @@
+Free, encrypted 2FA codes backed up to your own Nextcloud so you never lose them

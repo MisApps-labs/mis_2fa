@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 ferlagod
+# Mis 2FA — https://github.com/ferlagod/mis_2fa
+
+blank_issues_enabled: true
+contact_links:
+  - name: Vulnerabilidad de seguridad
+    url: https://github.com/ferlagod/mis_2fa/security/advisories/new
+    about: Informa de forma privada, no en una incidencia pública.

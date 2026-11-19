@@ -1,0 +1,1 @@
+First release: TOTP/HOTP/Steam codes, free QR scanner, import from Google Authenticator, Aegis, 2FAS and Ente Auth, encrypted backups and encrypted Nextcloud sync.

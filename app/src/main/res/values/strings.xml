@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-or-later
+  Copyright (C) 2026 ferlagod
+  Mis 2FA — https://github.com/ferlagod/mis_2fa
+
+  Default language: English. Translations in values-es, values-fr, values-de and values-it.
+-->
+<resources>
+    <string name="app_name" translatable="false">Mis 2FA</string>
+
+    <!-- General -->
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="undo">Undo</string>
+    <string name="unlock">Unlock</string>
+    <string name="change">Change</string>
+    <string name="export">Export</string>
+    <string name="import_action">Import</string>
+    <string name="password">Password</string>
+    <string name="password_repeat">Repeat password</string>
+    <string name="working">Working…</string>
+    <string name="preview">Preview</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+    <string name="hint_dismiss">Dismiss</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_scan_short">Scan QR</string>
+    <string name="shortcut_scan_long">Scan a QR code</string>
+
+    <!-- App lock -->
+    <string name="app_locked_title">Mis 2FA is locked</string>
+    <string name="app_locked_message">Unlock with your fingerprint, face or device PIN to see your codes.</string>
+    <string name="app_lock_prompt_title">Unlock Mis 2FA</string>
+    <string name="app_lock_prompt_subtitle">Confirm it\'s you</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Get started</string>
+    <string name="onboarding_welcome_title">Welcome to Mis\u00A02FA</string>
+    <string name="onboarding_welcome_message">Your two-step verification codes, private and free. No ads, no tracking and no account needed.</string>
+    <string name="onboarding_how_title">How it works</string>
+    <string name="onboarding_how_message">When a website asks you to turn on two-step verification, scan the QR code it shows you. Mis 2FA will then give you a new code every 30 seconds: type it in when you sign in. Tap a code to copy it.</string>
+    <string name="onboarding_private_title">Your codes stay yours</string>
+    <string name="onboarding_private_message">They\'re stored encrypted on this device and never leave it unless you want them to. You can also lock the app with your fingerprint, face or PIN.</string>
+    <string name="onboarding_backup_title">Don\'t lose access</string>
+    <string name="onboarding_backup_message">If you lose your phone, you lose your codes. Keep the recovery codes each website gives you, and sync with your own Nextcloud (end-to-end encrypted) or export an encrypted backup from Settings.</string>
+    <string name="settings_tutorial">View tutorial</string>
+    <string name="settings_tutorial_desc">How Mis 2FA works and how to keep your codes safe</string>
+
+    <!-- Home -->
+    <string name="welcome_title">Add your first account</string>
+    <string name="welcome_message">When a website asks you to set up two-step verification, scan the QR code it shows you or type the setup key.</string>
+    <string name="welcome_sync_hint">Already use Mis 2FA on another device? Connect the same Nextcloud account to get your codes back.</string>
+    <string name="add_account">Add account</string>
+    <string name="add_scan_qr">Scan QR code</string>
+    <string name="add_scan_qr_desc">Use the camera</string>
+    <string name="add_from_image">QR code from an image</string>
+    <string name="add_from_image_desc">A screenshot or a photo</string>
+    <string name="add_from_image_short">From image</string>
+    <string name="add_manual">Enter setup key</string>
+    <string name="add_manual_desc">Type the key the website gives you</string>
+    <string name="add_manual_short">Type key</string>
+    <string name="add_import">Import from another app</string>
+    <string name="add_import_desc">Google Authenticator, Aegis, 2FAS, Ente Auth…</string>
+    <string name="search_hint">Search accounts</string>
+    <string name="search_no_results">No accounts match your search</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_copy_code">Copy code</string>
+    <string name="cd_more_options">More options</string>
+    <string name="cd_next_hotp">Generate next code</string>
+    <string name="cd_sync_now">Synced. Tap to sync now</string>
+    <string name="cd_sync_error">Sync error</string>
+    <string name="code_copied">Code copied</string>
+    <string name="hint_sync">Your codes are only on this device. If you lose it, you\'d lose access to your accounts. Turn on Nextcloud sync so you never lose them.</string>
+    <string name="hint_sync_action">Set up sync</string>
+    <string name="hint_app_lock">Protect your codes with your fingerprint, face or device PIN.</string>
+    <string name="hint_app_lock_action">Turn on lock</string>
+    <string name="hint_gestures">Tap a code to copy it. Touch and hold an account for more options.</string>
+    <string name="review_settings">Review</string>
+    <string name="enter_master_password">Enter master password</string>
+
+    <!-- Account actions -->
+    <string name="action_copy">Copy code</string>
+    <string name="action_copy_next">Copy next code</string>
+    <string name="action_pin">Pin to top</string>
+    <string name="action_unpin">Unpin</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_show_qr">Show QR code</string>
+    <string name="action_show_qr_desc">To move this account to another device</string>
+    <string name="action_trash">Move to trash</string>
+    <string name="action_restore">Restore</string>
+    <string name="action_delete_forever">Delete forever</string>
+    <string name="qr_warning">Anyone who scans this code can generate your codes. Don\'t share it.</string>
+    <string name="account_added">Account added: %1$s</string>
+    <string name="account_duplicate">%1$s is already in Mis 2FA</string>
+    <string name="account_saved">Changes saved</string>
+    <plurals name="moved_to_trash">
+        <item quantity="one">Moved to trash</item>
+        <item quantity="other">%d accounts moved to trash</item>
+    </plurals>
+    <plurals name="accounts_deleted">
+        <item quantity="one">Account deleted</item>
+        <item quantity="other">%d accounts deleted</item>
+    </plurals>
+
+    <!-- Edit -->
+    <string name="edit_account">Edit account</string>
+    <string name="field_issuer">Service</string>
+    <string name="field_issuer_hint">GitHub, Google, your bank…</string>
+    <string name="field_account">Account</string>
+    <string name="field_account_hint">you@example.com</string>
+    <string name="field_secret">Setup key</string>
+    <string name="field_secret_help">The key shown next to the QR code. Spaces don\'t matter.</string>
+    <string name="advanced_options">Advanced options</string>
+    <string name="field_type">Type</string>
+    <string name="type_totp">Time-based</string>
+    <string name="type_hotp">Counter</string>
+    <string name="type_steam">Steam</string>
+    <string name="field_algorithm">Algorithm</string>
+    <string name="field_digits">Digits</string>
+    <string name="field_period">Period (seconds)</string>
+    <string name="field_counter">Counter</string>
+    <string name="error_name_required">Enter the service or the account name</string>
+    <string name="error_secret_invalid">This isn\'t a valid key. Use only letters A–Z and numbers 2–7.</string>
+
+    <!-- Scan -->
+    <string name="scan_title">Scan QR code</string>
+    <string name="scan_instructions">Point the camera at the QR code</string>
+    <string name="scan_not_otp">This QR code doesn\'t contain a two-step verification account</string>
+    <string name="scan_batch_progress">Scanned %1$d of %2$d QR codes. Scan the next one.</string>
+    <string name="scan_image_no_qr">No QR code found in that image</string>
+    <string name="camera_permission_title">Camera access needed</string>
+    <string name="camera_permission_message">Allow camera access to scan QR codes. You can also add accounts from an image or by typing the key.</string>
+    <string name="open_app_settings">Open settings</string>
+
+    <!-- Trash -->
+    <string name="trash_title">Trash</string>
+    <string name="trash_empty">Empty trash</string>
+    <string name="trash_empty_title">Trash is empty</string>
+    <string name="trash_empty_message">Accounts you delete stay here until you delete them forever.</string>
+    <string name="trash_info">Before deleting an account forever, make sure you\'ve turned off two-step verification on that website or you have another way to sign in.</string>
+    <string name="trash_deleted_when">Deleted · %1$s</string>
+    <string name="delete_forever_title">Delete forever?</string>
+    <string name="delete_forever_message">%1$s will be deleted from all your devices. You won\'t be able to generate its codes anymore.</string>
+    <string name="trash_empty_confirm_title">Empty trash?</string>
+    <string name="trash_empty_confirm_message">These accounts will be deleted from all your devices. This can\'t be undone.</string>
+    <plurals name="trash_count">
+        <item quantity="one">%d account</item>
+        <item quantity="other">%d accounts</item>
+    </plurals>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="section_sync">Sync</string>
+    <string name="section_security">Security</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="section_backup">Backups</string>
+    <string name="section_language">Language</string>
+    <string name="section_about">About</string>
+    <string name="app_lock">App lock</string>
+    <string name="app_lock_desc">Ask for fingerprint, face or device PIN to open the app</string>
+    <string name="app_lock_unavailable">Set a screen lock on your device first</string>
+    <string name="lock_timeout">Lock after</string>
+    <string name="lock_immediately">Immediately</string>
+    <string name="lock_one_minute">1 minute in the background</string>
+    <string name="lock_five_minutes">5 minutes in the background</string>
+    <string name="block_screenshots">Block screenshots</string>
+    <string name="block_screenshots_desc">Also hides the app in recent apps</string>
+    <string name="hide_codes">Hide codes</string>
+    <string name="hide_codes_desc">Show codes only when you tap them</string>
+    <string name="clipboard_clear">Clear clipboard</string>
+    <string name="clipboard_never">Never</string>
+    <plurals name="clipboard_seconds">
+        <item quantity="one">After %d second</item>
+        <item quantity="other">After %d seconds</item>
+    </plurals>
+    <string name="theme">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="amoled_mode">Pure black</string>
+    <string name="amoled_mode_desc">In dark mode, saves battery on OLED screens</string>
+    <string name="show_account_name">Show account name</string>
+    <string name="show_next_code">Show next code</string>
+    <string name="show_next_code_desc">Handy when the current code is about to expire</string>
+    <string name="sort_by">Sort by</string>
+    <string name="sort_issuer">Service (A–Z)</string>
+    <string name="sort_account">Account (A–Z)</string>
+    <string name="sort_newest">Newest first</string>
+    <string name="sort_oldest">Oldest first</string>
+    <string name="language_system">System language</string>
+    <string name="about_version">Mis 2FA %1$s</string>
+    <string name="about_license">Free software under the GNU GPL v3 or later. Comes with ABSOLUTELY NO WARRANTY.</string>
+    <string name="source_code">Source code</string>
+    <string name="license">License</string>
+
+    <!-- Backups -->
+    <string name="backup_desc">Keep a copy of your accounts somewhere safe, apart from your phone.</string>
+    <string name="export_encrypted">Export encrypted backup</string>
+    <string name="export_encrypted_desc">Protected with a password. Recommended.</string>
+    <string name="export_password_message">Choose a password for this backup. You\'ll need it to restore it.</string>
+    <string name="export_plain">Export as plain text</string>
+    <string name="export_plain_desc">otpauth:// links, compatible with other apps</string>
+    <string name="export_plain_warning_title">Unencrypted export</string>
+    <string name="export_plain_warning">Anyone who gets this file can generate all your codes. Use it only to move to another app and delete it afterwards.</string>
+    <string name="export_plain_confirm">I understand, export</string>
+    <string name="export_failed">Couldn\'t export the backup</string>
+    <plurals name="export_done">
+        <item quantity="one">%d account exported</item>
+        <item quantity="other">%d accounts exported</item>
+    </plurals>
+    <string name="import_title">Import</string>
+    <string name="import_desc">Mis 2FA backup, Aegis, 2FAS, Ente Auth (plain text) or otpauth:// links</string>
+    <string name="import_encrypted_title">Encrypted backup</string>
+    <string name="import_encrypted_message">Enter the password you chose when you exported this backup.</string>
+    <string name="import_unknown_format">This file isn\'t a supported backup</string>
+    <string name="import_aegis_encrypted">This Aegis backup is encrypted. In Aegis, export it again without encryption and import that file.</string>
+    <string name="import_2fas_encrypted">This 2FAS backup is encrypted. In 2FAS, export it again without a password and import that file.</string>
+    <string name="import_nothing">No accounts found</string>
+    <string name="import_summary">Imported: %1$d. Skipped (duplicates or invalid): %2$d</string>
+    <plurals name="import_added">
+        <item quantity="one">%d account imported</item>
+        <item quantity="other">%d accounts imported</item>
+    </plurals>
+
+    <!-- Nextcloud -->
+    <string name="nextcloud_connected">Connected to Nextcloud</string>
+    <string name="local_mode">This device only</string>
+    <string name="local_mode_desc">Your codes aren\'t backed up anywhere</string>
+    <string name="status_syncing">Syncing…</string>
+    <string name="status_synced">Synced · %1$s</string>
+    <string name="status_pending">Not synced yet</string>
+    <string name="sync_explanation">Your accounts are encrypted on this phone with your master password before they\'re uploaded. Your Nextcloud only stores unreadable data.</string>
+    <string name="field_server">Server</string>
+    <string name="field_user">User</string>
+    <string name="field_app_password">App password</string>
+    <string name="field_app_password_help">Create one in Nextcloud: Settings → Security → Devices &amp; sessions</string>
+    <string name="field_master_password">Master password</string>
+    <string name="field_master_password_help">Encrypts your codes. Use the same one on all your devices.</string>
+    <string name="master_password_warning">If you forget the master password, the backup on the server can\'t be recovered. Keep it in a safe place.</string>
+    <string name="error_required_fields">Fill in all the fields</string>
+    <string name="connect_and_encrypt">Connect and encrypt</string>
+    <string name="connecting">Connecting…</string>
+    <string name="sync_help_link">How do I connect?</string>
+    <string name="sync_now">Sync now</string>
+    <string name="change_master_password">Change master password</string>
+    <string name="change_password_message">Your backup on Nextcloud will be encrypted again with the new password. Your other devices will ask for it.</string>
+    <string name="password_changed">Master password changed</string>
+    <string name="reenter_password_message">The master password was changed on another device. Enter the new one to keep syncing.</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="disconnect_title">Disconnect Nextcloud?</string>
+    <string name="disconnect_message">Your codes will stay on this device and the encrypted backup will stay on your Nextcloud, but changes won\'t sync anymore.</string>
+    <string name="sync_disconnected">Nextcloud disconnected</string>
+    <string name="sync_error_auth">Wrong user or app password</string>
+    <string name="sync_error_network">No connection to the server</string>
+    <string name="sync_error_path">Server not found. Check the address and the user.</string>
+    <string name="sync_error_wrong_password">Wrong master password</string>
+    <string name="sync_error_password_changed">The master password was changed on another device</string>
+    <string name="sync_error_remote_corrupt">The backup on the server can\'t be read. It hasn\'t been modified.</string>
+    <string name="sync_error_https">For security, only https:// servers are supported</string>
+    <string name="sync_error_server">The server didn\'t respond correctly. Will retry later.</string>
+    <string name="sync_error_unknown">Couldn\'t sync</string>
+
+    <!-- Errors -->
+    <plurals name="error_password_short">
+        <item quantity="one">Use at least %d character</item>
+        <item quantity="other">Use at least %d characters</item>
+    </plurals>
+    <string name="error_password_mismatch">Passwords don\'t match</string>
+    <string name="error_save_failed">Couldn\'t save the changes</string>
+    <string name="error_vault_unreadable">Your accounts on this device can\'t be opened</string>
+    <string name="error_vault_unreadable_long">Your accounts on this device can\'t be opened. Nothing has been deleted. If you use Nextcloud sync or have a backup, you can recover them by reinstalling the app.</string>
+    <string name="link_add_title">Add account?</string>
+    <string name="link_add_message">%1$s will be added to Mis 2FA. Only add accounts you have set up yourself.</string>
+    <plurals name="link_add_batch">
+        <item quantity="one">%d account will be added to Mis 2FA.</item>
+        <item quantity="other">%d accounts will be added to Mis 2FA.</item>
+    </plurals>
+    <string name="error_wrong_password">Wrong password</string>
+    <string name="time_just_now">Just now</string>
+</resources>
