@@ -95,10 +95,14 @@ class SyncManager private constructor(context: Context) {
      */
     suspend fun connect(serverUrl: String, username: String, appPassword: String, masterPassword: String) {
         val server = SecureSettings.normalizeServerUrl(serverUrl) ?: throw SyncException(SyncError.HTTPS_REQUIRED)
-        val creds = NextcloudCredentials(server, username.trim(), appPassword.trim())
         mutex.withLock {
             _state.value = SyncState.Syncing
             try {
+                val user = username.trim()
+                val pass = appPassword.trim()
+                val userId = if (server.contains("/remote.php/dav/files/")) null
+                else WebDavClient.fetchUserId(server, user, pass)?.takeIf { it != user }
+                val creds = NextcloudCredentials(server, user, pass, userId)
                 val client = client(creds)
                 client.ensureRootFolder()
                 val remote = client.download(FILE_NAME)

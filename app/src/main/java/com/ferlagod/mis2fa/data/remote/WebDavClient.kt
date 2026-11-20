@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -77,6 +78,42 @@ class WebDavClient(
                 .followSslRedirects(false)
                 .build()
         }
+
+        /**
+         * ID interno del usuario en Nextcloud, que es el que va en la ruta WebDAV
+         * (`/remote.php/dav/files/<id>/`). No siempre coincide con lo que se escribe al iniciar
+         * sesión: quien entra con su email o con LDAP tiene otro ID.
+         *
+         * @return null si el servidor no responde a la API OCS (p. ej. ownCloud antiguo u otro
+         *   servidor WebDAV): entonces se usa el nombre de usuario tal cual.
+         * @throws WebDavAuthException si las credenciales no son válidas.
+         */
+        suspend fun fetchUserId(serverUrl: String, username: String, appPassword: String, http: OkHttpClient = sharedHttpClient): String? =
+            withContext(Dispatchers.IO) {
+                val url = serverUrl.trimEnd('/') + "/ocs/v2.php/cloud/user?format=json"
+                if (url.toHttpUrlOrNull() == null) throw WebDavInvalidUrlException(url)
+                val request = Request.Builder()
+                    .url(url)
+                    .header("Authorization", Credentials.basic(username, appPassword, Charsets.UTF_8))
+                    .header("User-Agent", USER_AGENT)
+                    .header("OCS-APIRequest", "true")
+                    .header("Accept", "application/json")
+                    .build()
+                try {
+                    http.newCall(request).execute().use { response ->
+                        if (response.code == 401) throw WebDavAuthException(response.code)
+                        if (!response.isSuccessful) return@withContext null
+                        val text = response.body?.string() ?: return@withContext null
+                        JSONObject(text).optJSONObject("ocs")?.optJSONObject("data")?.optString("id")?.takeIf { it.isNotBlank() }
+                    }
+                } catch (e: WebDavAuthException) {
+                    throw e
+                } catch (e: IOException) {
+                    throw e
+                } catch (_: Exception) {
+                    null // Respuesta que no es JSON de OCS.
+                }
+            }
 
         fun normalizeEtag(raw: String?): String? {
             if (raw.isNullOrBlank()) return null

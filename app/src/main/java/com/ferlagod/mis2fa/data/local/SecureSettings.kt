@@ -19,7 +19,9 @@ import javax.crypto.SecretKey
 data class NextcloudCredentials(
     val serverUrl: String,
     val username: String,
-    val appPassword: String
+    val appPassword: String,
+    /** ID interno de Nextcloud para la ruta WebDAV (null: se usa [username]). */
+    val userId: String? = null
 )
 
 /** Todo lo secreto de la sincronización. */
@@ -72,7 +74,7 @@ class SecureSettings private constructor(context: Context) {
         val user = json.optString(KEY_USER).takeIf { it.isNotBlank() } ?: return null
         val pass = json.optString(KEY_APP_PASSWORD).takeIf { it.isNotBlank() } ?: return null
         return SyncConfig(
-            credentials = NextcloudCredentials(server, user, pass),
+            credentials = NextcloudCredentials(server, user, pass, json.optString(KEY_USER_ID).takeIf { it.isNotBlank() }),
             key = json.optString(KEY_SYNC_KEY).takeIf { it.isNotBlank() }?.let { CryptoManager.keyFromBytes(CryptoManager.unb64(it)) },
             salt = json.optString(KEY_SALT).takeIf { it.isNotBlank() }?.let { CryptoManager.unb64(it) },
             iterations = json.optInt(KEY_ITERATIONS, CryptoManager.DEFAULT_PBKDF2_ITERATIONS),
@@ -86,6 +88,7 @@ class SecureSettings private constructor(context: Context) {
         put(KEY_SERVER, credentials.serverUrl.trim().trimEnd('/'))
         put(KEY_USER, credentials.username.trim())
         put(KEY_APP_PASSWORD, credentials.appPassword.trim())
+        if (credentials.userId.isNullOrBlank()) remove(KEY_USER_ID) else put(KEY_USER_ID, credentials.userId)
         put(KEY_SYNC_KEY, CryptoManager.b64(key.encoded))
         put(KEY_SALT, CryptoManager.b64(salt))
         put(KEY_ITERATIONS, iterations)
@@ -105,6 +108,7 @@ class SecureSettings private constructor(context: Context) {
         private const val KEY_SERVER = "server"
         private const val KEY_USER = "user"
         private const val KEY_APP_PASSWORD = "app_password"
+        private const val KEY_USER_ID = "user_id"
         private const val KEY_SYNC_KEY = "sync_key"
         private const val KEY_SALT = "salt"
         private const val KEY_ITERATIONS = "iterations"
@@ -128,7 +132,8 @@ class SecureSettings private constructor(context: Context) {
         fun webDavRootUrl(creds: NextcloudCredentials): String {
             val server = creds.serverUrl.trim().trimEnd('/')
             if (server.contains("/remote.php/dav/files/")) return "$server/"
-            val user = URLEncoder.encode(creds.username.trim(), "UTF-8").replace("+", "%20")
+            val id = creds.userId?.takeIf { it.isNotBlank() } ?: creds.username.trim()
+            val user = URLEncoder.encode(id, "UTF-8").replace("+", "%20")
             return "$server/remote.php/dav/files/$user/$REMOTE_FOLDER/"
         }
 
