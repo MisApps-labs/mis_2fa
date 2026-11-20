@@ -50,7 +50,7 @@ Mis 2FA protege tus claves secretas frente a:
 ### Transporte
 
 - Solo **HTTPS** (`cleartextTrafficPermitted=false` y rechazo de URLs `http://`).
-- Se confía en las autoridades del sistema y en las **instaladas por el usuario**, para permitir un Nextcloud propio con CA privada. Aunque alguien interceptara el TLS, la bóveda va cifrada de extremo a extremo; lo único expuesto sería la contraseña de aplicación de Nextcloud.
+- Se confía en las autoridades del sistema y en las **instaladas por el usuario**, para permitir un Nextcloud propio con CA privada. Aunque alguien interceptara el TLS, la bóveda va cifrada de extremo a extremo; lo único expuesto sería la contraseña de aplicación de Nextcloud. Ojo: esa contraseña da acceso a **todos** tus archivos de Nextcloud, no solo a `Mis2FA/`. Una CA instalada por una app maliciosa, por tu empresa (perfil de trabajo, MDM) o por un proxy de inspección podría capturarla. Si no usas una CA privada, no instales certificados de usuario; y si sospechas que la contraseña de aplicación se ha expuesto, revócala en Nextcloud (Ajustes → Seguridad → Dispositivos y sesiones).
 - Las redirecciones HTTP no se siguen (las credenciales nunca se envían a otro sitio).
 - Autenticación con *contraseña de aplicación* de Nextcloud (HTTP Basic sobre TLS).
 
@@ -64,6 +64,7 @@ Mis 2FA protege tus claves secretas frente a:
 
 ## Limitaciones conocidas
 
+- **Versiones antiguas en Nextcloud.** Nextcloud guarda versiones anteriores de `Mis2FA/vault.json` (y una copia en la papelera si se borra). Al cambiar la contraseña maestra, esas versiones siguen cifradas con la contraseña **antigua**: si la cambias porque alguien podría conocerla, borra también las versiones (pestaña *Versiones* del fichero) y vacía *Archivos eliminados*. La app lo recuerda en el diálogo de cambio de contraseña.
 - PBKDF2 es más débil frente a ataques con GPU que Argon2. Se eligió por estar disponible en Android sin código nativo; usa una contraseña maestra larga.
 - Las lápidas de borrado van dentro del bloque cifrado, pero el tamaño del fichero y las fechas de modificación de WebDAV son visibles para el servidor.
 - No se importan las exportaciones **cifradas** de Aegis, 2FAS ni Ente Auth (habría que añadir scrypt/Argon2): hay que exportarlas sin cifrar y borrar el fichero después.

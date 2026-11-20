@@ -241,7 +241,7 @@
     <string name="sync_help_link">Come mi collego?</string>
     <string name="sync_now">Sincronizza ora</string>
     <string name="change_master_password">Cambia password principale</string>
-    <string name="change_password_message">Il backup su Nextcloud verrà cifrato di nuovo con la nuova password. Gli altri dispositivi te la chiederanno.</string>
+    <string name="change_password_message">Il backup su Nextcloud verrà cifrato di nuovo con la nuova password. Gli altri dispositivi te la chiederanno. Se la cambi perché qualcuno potrebbe conoscere quella vecchia, elimina anche le versioni precedenti di Mis2FA/vault.json in Nextcloud (scheda Versioni e File eliminati): restano cifrate con la vecchia password.</string>
     <string name="password_changed">Password principale cambiata</string>
     <string name="reenter_password_message">La password principale è stata cambiata su un altro dispositivo. Inserisci quella nuova per continuare a sincronizzare.</string>
     <string name="disconnect">Scollega</string>

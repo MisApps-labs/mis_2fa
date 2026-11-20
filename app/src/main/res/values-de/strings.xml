@@ -235,7 +235,7 @@
     <string name="sync_help_link">Wie verbinde ich mich?</string>
     <string name="sync_now">Jetzt synchronisieren</string>
     <string name="change_master_password">Master-Passwort ändern</string>
-    <string name="change_password_message">Die Sicherung in Nextcloud wird mit dem neuen Passwort neu verschlüsselt. Deine anderen Geräte fragen danach.</string>
+    <string name="change_password_message">Die Sicherung in Nextcloud wird mit dem neuen Passwort neu verschlüsselt. Deine anderen Geräte fragen danach. Wenn du es änderst, weil jemand das alte kennen könnte, lösche auch die alten Versionen von Mis2FA/vault.json in Nextcloud (Tab „Versionen“ und „Gelöschte Dateien“): Sie sind weiterhin mit dem alten Passwort verschlüsselt.</string>
     <string name="password_changed">Master-Passwort geändert</string>
     <string name="reenter_password_message">Das Master-Passwort wurde auf einem anderen Gerät geändert. Gib das neue ein, um weiter zu synchronisieren.</string>
     <string name="disconnect">Trennen</string>

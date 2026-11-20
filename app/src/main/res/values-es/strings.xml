@@ -252,7 +252,7 @@
     <string name="sync_help_link">¿Cómo me conecto?</string>
     <string name="sync_now">Sincronizar ahora</string>
     <string name="change_master_password">Cambiar contraseña maestra</string>
-    <string name="change_password_message">La copia de Nextcloud se volverá a cifrar con la contraseña nueva. Tus otros dispositivos te la pedirán.</string>
+    <string name="change_password_message">La copia de Nextcloud se volverá a cifrar con la contraseña nueva. Tus otros dispositivos te la pedirán. Si la cambias porque alguien podría conocer la antigua, borra también las versiones anteriores de Mis2FA/vault.json en Nextcloud (pestaña Versiones y Archivos eliminados): siguen cifradas con la contraseña antigua.</string>
     <string name="password_changed">Contraseña maestra cambiada</string>
     <string name="reenter_password_message">La contraseña maestra se ha cambiado en otro dispositivo. Escribe la nueva para seguir sincronizando.</string>
     <string name="disconnect">Desconectar</string>
