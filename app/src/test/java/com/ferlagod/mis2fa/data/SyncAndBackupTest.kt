@@ -162,4 +162,25 @@ class SyncAndBackupTest {
         val json = ImportParser.parse(bom + "{\"schemaVersion\":4,\"services\":[{\"name\":\"X\",\"secret\":\"JBSWY3DPEHPK3PXP\",\"otp\":{}}]}")
         assertTrue(json is ImportContent.Tokens)
     }
+
+    @Test
+    fun oldTombstonesArePurgedRecentOnesKept() {
+        val now = 1_000L * 24 * 60 * 60 * 1000
+        val old = now - SyncMerger.TOMBSTONE_TTL_MS - 1
+        val recent = now - 1000
+        val vault = VaultData(listOf(token("a", 10)), mapOf("old" to old, "recent" to recent))
+        val purged = SyncMerger.purgeTombstones(vault, now)
+        assertEquals(setOf("recent"), purged.tombstones.keys)
+        assertEquals(vault.tokens, purged.tokens)
+    }
+
+    @Test
+    fun recentTombstoneStillDeletesAfterPurge() {
+        val now = 1_000L * 24 * 60 * 60 * 1000
+        val local = VaultData(listOf(token("a", now - 5000)))
+        val remote = VaultData(tombstones = mapOf("a" to now - 1000))
+        val merged = SyncMerger.purgeTombstones(SyncMerger.merge(local, remote), now)
+        assertTrue(merged.tokens.isEmpty())
+        assertEquals(setOf("a"), merged.tombstones.keys)
+    }
 }

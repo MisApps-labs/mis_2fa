@@ -126,7 +126,7 @@ class TokenRepository private constructor(context: Context) {
      * @return el estado local resultante.
      */
     suspend fun mergeFromRemote(remote: VaultData): VaultData = mutate(notify = false) { current ->
-        val merged = SyncMerger.merge(current, remote)
+        val merged = SyncMerger.purgeTombstones(SyncMerger.merge(current, remote), System.currentTimeMillis())
         if (SyncMerger.sameContent(merged, current)) current else merged
     }
 

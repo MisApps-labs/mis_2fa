@@ -48,6 +48,22 @@ object SyncMerger {
         return if (winner.counter == counter) winner else winner.copy(counter = counter)
     }
 
+    /** Las lápidas se guardan este tiempo; después se descartan para que la bóveda no crezca sin fin. */
+    const val TOMBSTONE_TTL_MS = 180L * 24 * 60 * 60 * 1000
+
+    /**
+     * Quita las lápidas de hace más de [TOMBSTONE_TTL_MS]. Se hace aparte de [merge] para que la
+     * fusión siga siendo pura y conmutativa.
+     *
+     * Contrapartida, en el sentido seguro: si un dispositivo pasa más de 6 meses sin sincronizar
+     * y aún tiene una cuenta borrada en otro, esa cuenta vuelve a aparecer (nunca al revés).
+     */
+    fun purgeTombstones(vault: VaultData, now: Long): VaultData {
+        val limit = now - TOMBSTONE_TTL_MS
+        val kept = vault.tombstones.filterValues { it >= limit }
+        return if (kept.size == vault.tombstones.size) vault else vault.copy(tombstones = kept)
+    }
+
     /** Mismo contenido aunque el orden de la lista sea distinto. */
     fun sameContent(x: VaultData, y: VaultData): Boolean =
         x.tombstones == y.tombstones && x.tokens.size == y.tokens.size && x.tokens.toSet() == y.tokens.toSet()

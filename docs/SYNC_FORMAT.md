@@ -81,6 +81,7 @@ La fusión es conmutativa: dos dispositivos con los mismos datos llegan al mismo
   - `counter` = máximo de los dos (HOTP nunca repite un código).
   - Si hay lápida y `deletedAt ≥ updatedAt`, la cuenta se elimina.
 - Una cuenta que falta en un lado **no** se borra del otro.
+- Tras fusionar, se descartan las lápidas de hace más de **180 días**. Si un dispositivo pasa más tiempo sin sincronizar, una cuenta que se borró en otro puede reaparecer (nunca se pierde una que no se borró).
 
 ## Cambio de contraseña maestra
 
