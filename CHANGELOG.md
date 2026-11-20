@@ -2,7 +2,9 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); versiones según [SemVer](https://semver.org/lang/es/).
 
-## [1.0.1] - Sin publicar
+## [1.0.0] - Sin publicar
+
+Primera versión (versionCode 2, con las correcciones de la revisión de seguridad).
 
 ### Corregido
 - Importar una copia de seguridad después de editar una cuenta la duplicaba con el mismo id: la lista se cerraba y al sincronizar se perdía una de las dos. Ahora cada cuenta importada recibe un id nuevo.
@@ -27,10 +29,6 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - Las lápidas de borrado de más de 180 días se descartan.
 - El reloj de la pantalla de inicio se para en segundo plano y la sincronización al volver a la app se hace como mucho cada 30 s.
 - Más tests: importación con ids repetidos, datos fuera de rango, rutas WebDAV, caducidad de lápidas y casos límite de la fusión.
-
-## [1.0.0] - Sin publicar
-
-Primera versión.
 
 ### Añadido
 - Códigos TOTP, HOTP y Steam Guard (SHA-1, SHA-256 y SHA-512; de 4 a 10 cifras; cualquier periodo).
