@@ -1,0 +1,1 @@
+Correcciones de seguridad y estabilidad: importar una copia ya no puede duplicar ni perder cuentas, una cuenta dañada no impide abrir la app, los códigos no se ven en Recientes ni con TalkBack mientras está bloqueada y el portapapeles se borra siempre. Conexión con Nextcloud usando el email, servidores sin ETag y aviso al cambiar la contraseña maestra.

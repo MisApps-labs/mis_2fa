@@ -1,0 +1,1 @@
+Security and stability fixes: importing a backup can no longer duplicate or lose accounts, a damaged account no longer stops the app from opening, codes aren't visible in Recents or to TalkBack while locked, and the clipboard is always cleared. Nextcloud sign-in with your email, servers without ETag, and a warning when changing the master password.
