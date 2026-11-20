@@ -198,8 +198,8 @@ class MainActivity : ComponentActivity() {
         }
         backgroundSince = 0
         if (appLocked && lockEnabled()) requestUnlock() else appLocked = false
-        // Trae los cambios de otros dispositivos al volver a la app.
-        viewModel.syncNow()
+        // Trae los cambios de otros dispositivos al volver a la app (como mucho cada 30 s).
+        viewModel.syncOnReturn()
     }
 
     override fun onStop() {

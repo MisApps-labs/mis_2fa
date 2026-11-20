@@ -6,6 +6,7 @@ package com.ferlagod.mis2fa.ui.viewmodel
 
 import android.app.Application
 import android.net.Uri
+import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
@@ -353,6 +354,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (syncManager.isConfigured()) syncManager.sync()
     }
 
+    /** Momento (reloj monotónico) de la última sincronización automática al volver a la app. */
+    private var lastAutoSync = 0L
+
+    /**
+     * Al volver a la app se traen los cambios de otros dispositivos, pero no cada vez: volver del
+     * selector de ficheros, de la cámara o de la huella también pasa por onStart.
+     */
+    fun syncOnReturn() {
+        val now = SystemClock.elapsedRealtime()
+        if (lastAutoSync != 0L && now - lastAutoSync < AUTO_SYNC_MIN_INTERVAL_MS) return
+        lastAutoSync = now
+        syncNow()
+    }
+
     fun syncConfig() = syncManager.config()
 
     fun connect(server: String, user: String, appPassword: String, masterPassword: String, onResult: (SyncError?) -> Unit) =
@@ -415,6 +430,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         private const val TAG = "MainViewModel"
         /** Ninguna exportación razonable pasa de esto; evita cargar ficheros enormes en memoria. */
         private const val MAX_IMPORT_BYTES = 5 * 1024 * 1024
+        private const val AUTO_SYNC_MIN_INTERVAL_MS = 30_000L
     }
 }
 
