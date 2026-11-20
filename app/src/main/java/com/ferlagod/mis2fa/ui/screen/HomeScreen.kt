@@ -107,6 +107,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.ferlagod.mis2fa.R
 import com.ferlagod.mis2fa.data.local.AppSettingsState
 import com.ferlagod.mis2fa.data.local.Hints
@@ -172,11 +175,15 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
 
     // Reloj: cada 100 ms para los anillos; los códigos solo se recalculan al cambiar de periodo.
+    // Solo mientras la app está visible: en segundo plano no hay nada que dibujar y se gastaría batería.
     val now = remember { mutableLongStateOf(System.currentTimeMillis()) }
-    LaunchedEffect(Unit) {
-        while (true) {
-            now.longValue = System.currentTimeMillis()
-            delay(100)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            while (true) {
+                now.longValue = System.currentTimeMillis()
+                delay(100)
+            }
         }
     }
 
