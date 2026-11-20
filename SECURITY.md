@@ -20,7 +20,7 @@ Mis 2FA protege tus claves secretas frente a:
 | Quien copia los ficheros de la app (copia de seguridad, otro dispositivo, análisis forense sin desbloquear el Keystore) | Todo lo guardado en el dispositivo está cifrado con una clave del Android Keystore que no se puede extraer. |
 | Quien coge tu teléfono desbloqueado | Bloqueo de la app con biometría fuerte o PIN; nueva autenticación antes de exportar o mostrar un QR. |
 | Capturas de pantalla, grabación y vista de "Recientes" | `FLAG_SECURE` activado por defecto. |
-| Otras apps que leen el portapapeles | Códigos marcados como sensibles y borrado automático. |
+| Otras apps que leen el portapapeles | Códigos marcados como sensibles y borrado automático (también si el sistema cierra la app antes de tiempo). |
 | Una web que abre un enlace `otpauth://` para colarte una cuenta suya | Los enlaces externos se confirman antes de añadirse. |
 | Gestores de contraseñas que ofrecen guardar lo que escribes (p. ej. el de Google) | Toda la app, incluidos los diálogos, está excluida del autocompletado: ni las claves secretas ni las contraseñas salen hacia ellos. |
 | Apps que dibujan encima para engañarte a pulsar algo (*tapjacking*) | Se ignoran los toques cuando la ventana está tapada por otra app. |
