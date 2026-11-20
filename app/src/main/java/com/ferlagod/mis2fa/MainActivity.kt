@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        applyScreenPrivacy(viewModel.settings.value.blockScreenshots)
+        applyScreenPrivacy()
         // Ningún campo de la app debe acabar en un gestor de contraseñas (claves secretas,
         // contraseña maestra, contraseñas de copias): se excluye todo del autocompletado.
         window.decorView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
@@ -137,7 +137,7 @@ class MainActivity : ComponentActivity() {
                 ThemeMode.LIGHT -> false
                 ThemeMode.DARK -> true
             }
-            LaunchedEffect(settings.blockScreenshots) { applyScreenPrivacy(settings.blockScreenshots) }
+            LaunchedEffect(settings.blockScreenshots, settings.appLock) { applyScreenPrivacy() }
 
             Mis2FATheme(darkTheme = darkTheme, amoled = settings.amoled) {
                 Surface(modifier = Modifier.fillMaxSize()) {
@@ -226,11 +226,32 @@ class MainActivity : ComponentActivity() {
         pendingAuthCallback = null
     }
 
-    /** Impide capturas y grabaciones, y oculta el contenido en "Recientes". */
-    private fun applyScreenPrivacy(enabled: Boolean) {
+    override fun onResume() {
+        super.onResume()
+        applyScreenPrivacy()
+    }
+
+    override fun onPause() {
+        // Android 8-12 no permite ocultar solo la miniatura de "Recientes": con el bloqueo activado
+        // se marca la ventana como segura al salir, que es cuando el sistema hace la captura.
+        if (lockEnabled() && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) setSecureFlag(true)
+        super.onPause()
+    }
+
+    /**
+     * "Bloquear capturas" impide capturas y grabaciones. Además, la miniatura de "Recientes" se
+     * oculta también si el bloqueo con huella está activado: si no, los códigos se verían en el
+     * selector de apps aunque la app esté bloqueada.
+     */
+    private fun applyScreenPrivacy() {
+        val block = viewModel.settings.value.blockScreenshots
+        setSecureFlag(block)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) setRecentsScreenshotEnabled(!block && !lockEnabled())
+    }
+
+    private fun setSecureFlag(enabled: Boolean) {
         if (enabled) window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         else window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) setRecentsScreenshotEnabled(!enabled)
     }
 
     private fun handleIntent(intent: Intent?) {
