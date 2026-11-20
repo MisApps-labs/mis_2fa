@@ -8,6 +8,8 @@ import android.content.Context
 import android.util.Log
 import com.ferlagod.mis2fa.security.CryptoManager
 import com.ferlagod.mis2fa.security.KeystoreCipher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.File
 import java.net.URLEncoder
@@ -52,11 +54,16 @@ class SecureSettings private constructor(context: Context) {
         JSONObject()
     }
 
-    @Synchronized
-    private fun edit(block: JSONObject.() -> Unit) {
-        val next = JSONObject(cache.toString()).apply(block)
-        file.write(next.toString().toByteArray(Charsets.UTF_8))
-        cache = next
+    /**
+     * Cifrar con el Keystore puede tardar cientos de milisegundos con StrongBox: nunca en el hilo
+     * principal (provocaría tirones o un "La app no responde").
+     */
+    private suspend fun edit(block: JSONObject.() -> Unit) = withContext(Dispatchers.IO) {
+        synchronized(this@SecureSettings) {
+            val next = JSONObject(cache.toString()).apply(block)
+            file.write(next.toString().toByteArray(Charsets.UTF_8))
+            cache = next
+        }
     }
 
     fun get(): SyncConfig? {
@@ -75,7 +82,7 @@ class SecureSettings private constructor(context: Context) {
 
     fun isConfigured(): Boolean = get() != null
 
-    fun save(credentials: NextcloudCredentials, key: SecretKey, salt: ByteArray, iterations: Int) = edit {
+    suspend fun save(credentials: NextcloudCredentials, key: SecretKey, salt: ByteArray, iterations: Int) = edit {
         put(KEY_SERVER, credentials.serverUrl.trim().trimEnd('/'))
         put(KEY_USER, credentials.username.trim())
         put(KEY_APP_PASSWORD, credentials.appPassword.trim())
@@ -85,11 +92,11 @@ class SecureSettings private constructor(context: Context) {
     }
 
     /** La contraseña maestra cambió en otro dispositivo: hay que pedirla de nuevo. */
-    fun clearKey() = edit { remove(KEY_SYNC_KEY) }
+    suspend fun clearKey() = edit { remove(KEY_SYNC_KEY) }
 
-    fun setLastSync(time: Long) = edit { put(KEY_LAST_SYNC, time) }
+    suspend fun setLastSync(time: Long) = edit { put(KEY_LAST_SYNC, time) }
 
-    fun clear() = edit {
+    suspend fun clear() = edit {
         keys().asSequence().toList().forEach { remove(it) }
     }
 
