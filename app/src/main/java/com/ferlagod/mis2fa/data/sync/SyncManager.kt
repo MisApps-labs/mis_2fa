@@ -160,7 +160,7 @@ class SyncManager private constructor(context: Context) {
                 val local = repository.mergeFromRemote(remoteData)
                 if (!SyncMerger.sameContent(local, remoteData)) {
                     val content = VaultCodec.encode(VaultCodec.FORMAT_SYNC, local, key, envelope.salt, envelope.iterations)
-                    client.upload(FILE_NAME, content, ifMatch = remote.etag, ifNoneMatch = remote.etag == null)
+                    replace(client, remote, content)
                 }
                 return
             } catch (_: WebDavPreconditionFailedException) {
@@ -190,7 +190,7 @@ class SyncManager private constructor(context: Context) {
                 val merged = repository.mergeFromRemote(envelope.decrypt(key))
                 val (newKey, salt, iterations) = VaultCodec.newKey(newPassword)
                 val content = VaultCodec.encode(VaultCodec.FORMAT_SYNC, merged, newKey, salt, iterations)
-                client.upload(FILE_NAME, content, ifMatch = remote.etag)
+                replace(client, remote, content)
                 secure.save(config.credentials, newKey, salt, iterations)
                 secure.setLastSync(System.currentTimeMillis())
                 _state.value = SyncState.Success(System.currentTimeMillis())
@@ -198,6 +198,27 @@ class SyncManager private constructor(context: Context) {
                 throw SyncException(map(e), e)
             }
         }
+    }
+
+    /**
+     * Sustituye el fichero remoto solo si sigue siendo [remote].
+     *
+     * Con ETag se usa `If-Match`. Algunos servidores o proxies no lo envían: antes se mandaba
+     * `If-None-Match: *` sobre un fichero que ya existe, que siempre da 412, y la sincronización
+     * no terminaba nunca. Sin ETag se vuelve a descargar justo antes y se compara el contenido
+     * (queda una ventana mínima, inevitable sin ayuda del servidor).
+     *
+     * @throws WebDavPreconditionFailedException si el fichero cambió entretanto.
+     */
+    private suspend fun replace(client: WebDavClient, remote: RemoteFile, content: String) {
+        if (remote.etag != null) {
+            client.upload(FILE_NAME, content, ifMatch = remote.etag)
+            return
+        }
+        Log.w(TAG, "El servidor no envía ETag: se comprueba el contenido antes de subir")
+        val current = client.download(FILE_NAME)
+        if (current == null || !current.bytes.contentEquals(remote.bytes)) throw WebDavPreconditionFailedException()
+        client.upload(FILE_NAME, content)
     }
 
     /** Desconecta la cuenta. Las cuentas del dispositivo y las del servidor no se tocan. */
