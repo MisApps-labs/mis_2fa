@@ -125,6 +125,7 @@ class UriParsingTest {
         val batch = GoogleMigration.parse(uri)
         assertEquals(2, batch.size)
         assertEquals(1, batch.index)
+        assertEquals(12345L, batch.id)
         assertEquals(2, batch.tokens.size)
         val a = batch.tokens[0]
         assertEquals("Example", a.issuer)

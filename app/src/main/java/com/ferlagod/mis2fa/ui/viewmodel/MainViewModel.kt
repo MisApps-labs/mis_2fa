@@ -64,7 +64,7 @@ sealed interface ScanOutcome {
     data class Added(val name: String) : ScanOutcome
     data class Duplicate(val name: String) : ScanOutcome
     /** Un QR de un lote de Google Authenticator (index empieza en 0). */
-    data class Batch(val result: AddResult, val index: Int, val size: Int) : ScanOutcome
+    data class Batch(val result: AddResult, val index: Int, val size: Int, val id: Long = 0) : ScanOutcome
     data object NotOtp : ScanOutcome
 }
 
@@ -209,7 +209,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 GoogleMigration.isMigration(trimmed) -> {
                     val batch = GoogleMigration.parse(trimmed)
-                    ScanOutcome.Batch(repository.add(batch.tokens), batch.index, batch.size)
+                    ScanOutcome.Batch(repository.add(batch.tokens), batch.index, batch.size, batch.id)
                 }
                 else -> ScanOutcome.NotOtp
             }

@@ -29,8 +29,11 @@ object GoogleMigration {
 
     fun isMigration(text: String) = text.trim().startsWith(SCHEME, ignoreCase = true)
 
-    /** Resultado: las cuentas y, si la exportación tiene varios QR, cuál es este (1 de N). */
-    data class Batch(val tokens: List<Token>, val index: Int, val size: Int)
+    /**
+     * Resultado: las cuentas y, si la exportación tiene varios QR, cuál es este (1 de N).
+     * [id] identifica la exportación: los QR de dos exportaciones distintas no se mezclan.
+     */
+    data class Batch(val tokens: List<Token>, val index: Int, val size: Int, val id: Long = 0)
 
     fun parse(uri: String): Batch {
         val text = uri.trim()
@@ -52,16 +55,18 @@ object GoogleMigration {
         val tokens = mutableListOf<Token>()
         var batchSize = 1
         var batchIndex = 0
+        var batchId = 0L
         while (reader.hasMore()) {
             val (field, wire) = reader.readTag()
             when {
                 field == 1 && wire == 2 -> parseOtp(reader.readBytes())?.let(tokens::add)
                 field == 3 && wire == 0 -> batchSize = reader.readVarint().toInt()
                 field == 4 && wire == 0 -> batchIndex = reader.readVarint().toInt()
+                field == 5 && wire == 0 -> batchId = reader.readVarint()
                 else -> reader.skip(wire)
             }
         }
-        return Batch(tokens, batchIndex, batchSize.coerceAtLeast(1))
+        return Batch(tokens, batchIndex, batchSize.coerceAtLeast(1), batchId)
     }
 
     private fun parseOtp(bytes: ByteArray): Token? {

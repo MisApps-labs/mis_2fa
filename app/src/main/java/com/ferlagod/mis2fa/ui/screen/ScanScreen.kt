@@ -119,6 +119,7 @@ fun ScanScreen(
     var processing by remember { mutableStateOf(false) }
     // Lotes de Google Authenticator ya leídos (para pedir el siguiente QR).
     var batchesDone by remember { mutableStateOf(emptySet<Int>()) }
+    var batchId by remember { mutableStateOf<Long?>(null) }
     var lastText by remember { mutableStateOf<String?>(null) }
     val notOtpText = stringResource(R.string.scan_not_otp)
     val batchTemplate = stringResource(R.string.scan_batch_progress)
@@ -132,6 +133,11 @@ fun ScanScreen(
             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
             when (outcome) {
                 is ScanOutcome.Batch -> {
+                    // QR de otra exportación (p. ej. se empezó de nuevo en el otro móvil): se cuenta desde cero.
+                    if (batchId != outcome.id) {
+                        batchId = outcome.id
+                        batchesDone = emptySet()
+                    }
                     val done = batchesDone + outcome.index
                     batchesDone = done
                     if (done.size >= outcome.size) {
