@@ -31,13 +31,19 @@ class KeystoreCipher(private val context: Context, private val alias: String) {
         const val TRANSFORMATION = "AES/GCM/NoPadding"
         const val IV_LENGTH = 12
         const val TAG_LENGTH_BITS = 128
+
+        /**
+         * Compartido por todas las instancias: la bóveda y los ajustes de sincronización usan el
+         * mismo alias con instancias distintas. Con un bloqueo por instancia, dos primeras
+         * escrituras simultáneas podrían generar la clave dos veces; la segunda sustituiría a la
+         * primera y lo cifrado con ella quedaría ilegible.
+         */
+        val KEY_LOCK = Any()
     }
 
-    @Synchronized
-    private fun key(): SecretKey {
+    private fun key(): SecretKey = synchronized(KEY_LOCK) {
         val keyStore = KeyStore.getInstance(PROVIDER).apply { load(null) }
-        (keyStore.getKey(alias, null) as? SecretKey)?.let { return it }
-        return generate(strongBox = hasStrongBox())
+        (keyStore.getKey(alias, null) as? SecretKey) ?: generate(strongBox = hasStrongBox())
     }
 
     private fun hasStrongBox(): Boolean =
