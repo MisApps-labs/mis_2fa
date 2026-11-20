@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 /** Resultado de añadir varias cuentas a la vez. */
 data class AddResult(val added: Int, val duplicates: Int)
@@ -61,7 +62,7 @@ class TokenRepository private constructor(context: Context) {
     fun find(id: String): Token? = _vault.value.tokens.firstOrNull { it.id == id }
 
     /** Momento de modificación estrictamente posterior al anterior, aunque el reloj vaya hacia atrás. */
-    private fun stamp(previous: Long) = maxOf(System.currentTimeMillis(), previous + 1)
+    private fun stamp(previous: Long) = stamp(System.currentTimeMillis(), previous)
 
     private suspend fun mutate(notify: Boolean = true, block: (VaultData) -> VaultData): VaultData = mutex.withLock {
         check(!_loadFailed.value) { "La bóveda local no se puede leer" }
@@ -75,39 +76,16 @@ class TokenRepository private constructor(context: Context) {
         next
     }
 
-    /**
-     * Añade cuentas evitando duplicados (mismo secreto, emisor y cuenta). Si el duplicado estaba en
-     * la papelera, se restaura.
-     */
+    /** Añade cuentas (ver [addTokens]). */
     suspend fun add(tokens: List<Token>): AddResult {
-        var added = 0
-        var duplicates = 0
+        var result = AddResult(0, 0)
         if (tokens.size > 1) withContext(Dispatchers.IO) { store.snapshotNow() }
         mutate { current ->
-            val list = current.tokens.toMutableList()
-            val seen = list.associateBy { it.identityKey }.toMutableMap()
-            for (incoming in tokens) {
-                val existing = seen[incoming.identityKey]
-                if (existing != null) {
-                    if (existing.isTrashed) {
-                        val restored = existing.copy(trashedAt = null, updatedAt = stamp(existing.updatedAt))
-                        list[list.indexOfFirst { it.id == existing.id }] = restored
-                        seen[incoming.identityKey] = restored
-                        added++
-                    } else {
-                        duplicates++
-                    }
-                    continue
-                }
-                val now = System.currentTimeMillis()
-                val token = incoming.copy(createdAt = now, updatedAt = now, trashedAt = null)
-                list += token
-                seen[token.identityKey] = token
-                added++
-            }
-            current.copy(tokens = list)
+            val (next, r) = addTokens(current, tokens, System.currentTimeMillis())
+            result = r
+            next
         }
-        return AddResult(added, duplicates)
+        return result
     }
 
     suspend fun update(token: Token) = mutate { current ->
@@ -157,6 +135,42 @@ class TokenRepository private constructor(context: Context) {
 
     companion object {
         private const val TAG = "TokenRepository"
+
+        private fun stamp(now: Long, previous: Long) = maxOf(now, previous + 1)
+
+        /**
+         * Añade [tokens] a [current] evitando duplicados (mismo secreto, emisor y cuenta). Si el
+         * duplicado estaba en la papelera, se restaura.
+         *
+         * Cada cuenta nueva recibe un id nuevo: una copia de seguridad trae los ids originales y,
+         * si la cuenta se editó después, coincidiría el id pero no la identidad. Dos cuentas con el
+         * mismo id romperían la lista y la sincronización se quedaría solo con una.
+         */
+        internal fun addTokens(current: VaultData, tokens: List<Token>, now: Long): Pair<VaultData, AddResult> {
+            var added = 0
+            var duplicates = 0
+            val list = current.tokens.toMutableList()
+            val seen = list.associateBy { it.identityKey }.toMutableMap()
+            for (incoming in tokens) {
+                val existing = seen[incoming.identityKey]
+                if (existing != null) {
+                    if (existing.isTrashed) {
+                        val restored = existing.copy(trashedAt = null, updatedAt = stamp(now, existing.updatedAt))
+                        list[list.indexOfFirst { it.id == existing.id }] = restored
+                        seen[incoming.identityKey] = restored
+                        added++
+                    } else {
+                        duplicates++
+                    }
+                    continue
+                }
+                val token = incoming.copy(id = UUID.randomUUID().toString(), createdAt = now, updatedAt = now, trashedAt = null)
+                list += token
+                seen[token.identityKey] = token
+                added++
+            }
+            return current.copy(tokens = list) to AddResult(added, duplicates)
+        }
 
         @Volatile
         private var INSTANCE: TokenRepository? = null
