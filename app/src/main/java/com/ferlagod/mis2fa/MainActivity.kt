@@ -40,9 +40,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -141,25 +143,37 @@ class MainActivity : ComponentActivity() {
 
             Mis2FATheme(darkTheme = darkTheme, amoled = settings.amoled) {
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    val focusManager = LocalFocusManager.current
+                    // Al bloquear, ningún campo de debajo debe seguir recibiendo lo que se teclee.
+                    LaunchedEffect(appLocked) { if (appLocked) focusManager.clearFocus(force = true) }
                     Box(modifier = Modifier.fillMaxSize()) {
-                        if (!settings.onboardingDone) {
-                            // Primer arranque: tutorial y después el inicio vacío. Lo que llegue
-                            // mientras (un enlace otpauth://) espera en pendingAction.
-                            OnboardingScreen(onFinish = viewModel::finishOnboarding)
-                        } else AppNavigation(
-                            viewModel = viewModel,
-                            appLocked = appLocked,
-                            pendingAction = pendingAction,
-                            onPendingActionConsumed = { pendingAction = null },
-                            currentLanguage = LanguageManager.current(this@MainActivity),
-                            onLanguageSelected = { LanguageManager.set(this@MainActivity, it) },
-                            isAppLockAvailable = AppLock.isAvailable(this@MainActivity),
-                            requireAuth = { onGranted -> requestUnlock { ok -> if (ok) onGranted() } },
-                            onAppLockChange = { enabled ->
-                                // Activarlo (y desactivarlo) exige autenticarse.
-                                requestUnlock { ok -> if (ok) viewModel.setAppLock(enabled) }
-                            }
-                        )
+                        // El contenido sigue compuesto (no se pierde un formulario a medias), pero
+                        // mientras está bloqueado no existe para TalkBack ni otros servicios de
+                        // accesibilidad, que podrían leer los códigos que hay debajo del bloqueo.
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .then(if (appLocked) Modifier.clearAndSetSemantics { } else Modifier)
+                        ) {
+                            if (!settings.onboardingDone) {
+                                // Primer arranque: tutorial y después el inicio vacío. Lo que llegue
+                                // mientras (un enlace otpauth://) espera en pendingAction.
+                                OnboardingScreen(onFinish = viewModel::finishOnboarding)
+                            } else AppNavigation(
+                                viewModel = viewModel,
+                                appLocked = appLocked,
+                                pendingAction = pendingAction,
+                                onPendingActionConsumed = { pendingAction = null },
+                                currentLanguage = LanguageManager.current(this@MainActivity),
+                                onLanguageSelected = { LanguageManager.set(this@MainActivity, it) },
+                                isAppLockAvailable = AppLock.isAvailable(this@MainActivity),
+                                requireAuth = { onGranted -> requestUnlock { ok -> if (ok) onGranted() } },
+                                onAppLockChange = { enabled ->
+                                    // Activarlo (y desactivarlo) exige autenticarse.
+                                    requestUnlock { ok -> if (ok) viewModel.setAppLock(enabled) }
+                                }
+                            )
+                        }
                         AnimatedVisibility(visible = appLocked, enter = fadeIn(), exit = fadeOut()) {
                             AppLockScreen(onUnlock = { requestUnlock() })
                         }
