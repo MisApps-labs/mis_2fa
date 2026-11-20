@@ -211,6 +211,7 @@
     <string name="import_encrypted_title">Backup cifrato</string>
     <string name="import_encrypted_message">Inserisci la password scelta quando hai esportato questo backup.</string>
     <string name="import_unknown_format">Questo file non è un backup compatibile</string>
+    <string name="import_newer_version">Questo backup è stato creato con una versione più recente di Mis 2FA. Aggiorna l\'app per importarlo.</string>
     <string name="import_aegis_encrypted">Questo backup di Aegis è cifrato. In Aegis, esportalo di nuovo senza cifratura e importa quel file.</string>
     <string name="import_2fas_encrypted">Questo backup di 2FAS è cifrato. In 2FAS, esportalo di nuovo senza password e importa quel file.</string>
     <string name="import_nothing">Nessun account trovato</string>
@@ -254,6 +255,7 @@
     <string name="sync_error_wrong_password">Password principale errata</string>
     <string name="sync_error_password_changed">La password principale è stata cambiata su un altro dispositivo</string>
     <string name="sync_error_remote_corrupt">Il backup sul server non è leggibile. Non è stato modificato.</string>
+    <string name="sync_error_remote_newer">Il backup sul server è stato salvato da una versione più recente di Mis 2FA. Aggiorna l\'app per continuare a sincronizzare.</string>
     <string name="sync_error_https">Per sicurezza sono supportati solo server https://</string>
     <string name="sync_error_server">Il server non ha risposto correttamente. Si riproverà più tardi.</string>
     <string name="sync_error_unknown">Impossibile sincronizzare</string>

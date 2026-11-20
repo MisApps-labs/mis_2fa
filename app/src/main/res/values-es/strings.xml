@@ -221,6 +221,7 @@
     <string name="import_encrypted_title">Copia cifrada</string>
     <string name="import_encrypted_message">Escribe la contraseña que elegiste al exportar esta copia.</string>
     <string name="import_unknown_format">Este fichero no es una copia de seguridad compatible</string>
+    <string name="import_newer_version">Esta copia se hizo con una versión más nueva de Mis 2FA. Actualiza la app para importarla.</string>
     <string name="import_aegis_encrypted">Esta copia de Aegis está cifrada. En Aegis, vuelve a exportarla sin cifrar e importa ese fichero.</string>
     <string name="import_2fas_encrypted">Esta copia de 2FAS está cifrada. En 2FAS, vuelve a exportarla sin contraseña e importa ese fichero.</string>
     <string name="import_nothing">No se ha encontrado ninguna cuenta</string>
@@ -265,6 +266,7 @@
     <string name="sync_error_wrong_password">Contraseña maestra incorrecta</string>
     <string name="sync_error_password_changed">La contraseña maestra se ha cambiado en otro dispositivo</string>
     <string name="sync_error_remote_corrupt">No se puede leer la copia del servidor. No se ha modificado.</string>
+    <string name="sync_error_remote_newer">La copia del servidor la guardó una versión más nueva de Mis 2FA. Actualiza la app para seguir sincronizando.</string>
     <string name="sync_error_https">Por seguridad, solo se admiten servidores https://</string>
     <string name="sync_error_server">El servidor no ha respondido bien. Se volverá a intentar más tarde.</string>
     <string name="sync_error_unknown">No se ha podido sincronizar</string>

@@ -21,6 +21,7 @@ fun syncErrorRes(error: SyncError): Int =
         SyncError.WRONG_PASSWORD -> R.string.sync_error_wrong_password
         SyncError.PASSWORD_CHANGED -> R.string.sync_error_password_changed
         SyncError.REMOTE_CORRUPT -> R.string.sync_error_remote_corrupt
+        SyncError.REMOTE_NEWER -> R.string.sync_error_remote_newer
         SyncError.HTTPS_REQUIRED -> R.string.sync_error_https
         SyncError.LOCAL_UNREADABLE -> R.string.error_vault_unreadable
         SyncError.SERVER -> R.string.sync_error_server

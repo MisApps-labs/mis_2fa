@@ -210,4 +210,16 @@ class SyncAndBackupTest {
         assertEquals("Nuevo nombre", t.issuer)
         assertEquals(9L, t.counter)
     }
+
+    @Test
+    fun newerFileVersionIsReportedAsSuchNotAsCorrupt() {
+        val (key, salt, iterations) = runBlocking { VaultCodec.newKey("contraseña larga") }
+        val newer = org.json.JSONObject(VaultCodec.encode(VaultCodec.FORMAT_BACKUP, VaultData(), key, salt, iterations))
+            .put("version", VaultCodec.VERSION + 1).toString()
+        try {
+            VaultCodec.parse(newer)
+            fail("Debería rechazar una versión futura")
+        } catch (_: com.ferlagod.mis2fa.data.sync.NewerVaultVersionException) {
+        }
+    }
 }

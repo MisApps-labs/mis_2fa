@@ -206,6 +206,7 @@
     <string name="import_encrypted_title">Verschlüsselte Sicherung</string>
     <string name="import_encrypted_message">Gib das Passwort ein, das du beim Export dieser Sicherung gewählt hast.</string>
     <string name="import_unknown_format">Diese Datei ist keine unterstützte Sicherung</string>
+    <string name="import_newer_version">Diese Sicherung wurde mit einer neueren Version von Mis 2FA erstellt. Aktualisiere die App, um sie zu importieren.</string>
     <string name="import_aegis_encrypted">Diese Aegis-Sicherung ist verschlüsselt. Exportiere sie in Aegis erneut ohne Verschlüsselung und importiere diese Datei.</string>
     <string name="import_2fas_encrypted">Diese 2FAS-Sicherung ist verschlüsselt. Exportiere sie in 2FAS erneut ohne Passwort und importiere diese Datei.</string>
     <string name="import_nothing">Keine Konten gefunden</string>
@@ -248,6 +249,7 @@
     <string name="sync_error_wrong_password">Falsches Master-Passwort</string>
     <string name="sync_error_password_changed">Das Master-Passwort wurde auf einem anderen Gerät geändert</string>
     <string name="sync_error_remote_corrupt">Die Sicherung auf dem Server ist unlesbar. Sie wurde nicht verändert.</string>
+    <string name="sync_error_remote_newer">Die Sicherung auf dem Server wurde von einer neueren Version von Mis 2FA gespeichert. Aktualisiere die App, um weiter zu synchronisieren.</string>
     <string name="sync_error_https">Aus Sicherheitsgründen werden nur https://-Server unterstützt</string>
     <string name="sync_error_server">Der Server hat nicht korrekt geantwortet. Neuer Versuch später.</string>
     <string name="sync_error_unknown">Synchronisierung fehlgeschlagen</string>

@@ -12,7 +12,10 @@ import org.json.JSONObject
 import javax.crypto.SecretKey
 
 /** El fichero no tiene el formato esperado (dañado, de otra app o de una versión futura). */
-class InvalidVaultFileException(message: String, cause: Throwable? = null) : Exception(message, cause)
+open class InvalidVaultFileException(message: String, cause: Throwable? = null) : Exception(message, cause)
+
+/** El fichero es de una versión más nueva de la app: hay que actualizar, no está dañado. */
+class NewerVaultVersionException : InvalidVaultFileException("Versión no soportada")
 
 /** La contraseña no abre el fichero. */
 class WrongPasswordException : Exception("Wrong password")
@@ -74,7 +77,7 @@ object VaultCodec {
             val json = JSONObject(raw)
             val format = json.getString("format")
             if (format != FORMAT_SYNC && format != FORMAT_BACKUP) throw InvalidVaultFileException("Formato desconocido: $format")
-            if (json.optInt("version", 0) > VERSION) throw InvalidVaultFileException("Versión no soportada")
+            if (json.optInt("version", 0) > VERSION) throw NewerVaultVersionException()
             val kdf = json.getJSONObject("kdf")
             if (kdf.optString("name") != CryptoManager.KDF_ALGORITHM) throw InvalidVaultFileException("Derivación no soportada")
             val salt = CryptoManager.unb64(kdf.getString("salt"))

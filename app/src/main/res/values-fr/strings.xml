@@ -211,6 +211,7 @@
     <string name="import_encrypted_title">Sauvegarde chiffrée</string>
     <string name="import_encrypted_message">Saisissez le mot de passe choisi lors de l\'exportation de cette sauvegarde.</string>
     <string name="import_unknown_format">Ce fichier n\'est pas une sauvegarde compatible</string>
+    <string name="import_newer_version">Cette sauvegarde a été créée avec une version plus récente de Mis 2FA. Mettez l\'application à jour pour l\'importer.</string>
     <string name="import_aegis_encrypted">Cette sauvegarde Aegis est chiffrée. Dans Aegis, exportez-la à nouveau sans chiffrement et importez ce fichier.</string>
     <string name="import_2fas_encrypted">Cette sauvegarde 2FAS est chiffrée. Dans 2FAS, exportez-la à nouveau sans mot de passe et importez ce fichier.</string>
     <string name="import_nothing">Aucun compte trouvé</string>
@@ -254,6 +255,7 @@
     <string name="sync_error_wrong_password">Mot de passe maître incorrect</string>
     <string name="sync_error_password_changed">Le mot de passe maître a été modifié sur un autre appareil</string>
     <string name="sync_error_remote_corrupt">La sauvegarde du serveur est illisible. Elle n\'a pas été modifiée.</string>
+    <string name="sync_error_remote_newer">La sauvegarde du serveur a été enregistrée par une version plus récente de Mis 2FA. Mettez l\'application à jour pour continuer la synchronisation.</string>
     <string name="sync_error_https">Par sécurité, seuls les serveurs https:// sont acceptés</string>
     <string name="sync_error_server">Le serveur n\'a pas répondu correctement. Nouvel essai plus tard.</string>
     <string name="sync_error_unknown">Impossible de synchroniser</string>

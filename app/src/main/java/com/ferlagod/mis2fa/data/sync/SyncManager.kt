@@ -38,8 +38,10 @@ enum class SyncError {
     WRONG_PASSWORD,
     /** La contraseña maestra se cambió en otro dispositivo: hay que volver a escribirla. */
     PASSWORD_CHANGED,
-    /** El fichero del servidor está dañado o es de otra versión (no se toca). */
+    /** El fichero del servidor está dañado (no se toca). */
     REMOTE_CORRUPT,
+    /** El fichero del servidor es de una versión más nueva de la app (no se toca). */
+    REMOTE_NEWER,
     /** Solo se admiten servidores HTTPS. */
     HTTPS_REQUIRED,
     /** La bóveda del dispositivo no se puede leer. */
@@ -236,6 +238,7 @@ class SyncManager private constructor(context: Context) {
     private fun map(e: Throwable): SyncError = when (e) {
         is SyncException -> e.error
         is WrongPasswordException -> SyncError.WRONG_PASSWORD
+        is NewerVaultVersionException -> SyncError.REMOTE_NEWER
         is InvalidVaultFileException -> SyncError.REMOTE_CORRUPT
         is WebDavAuthException -> SyncError.AUTH
         is WebDavPathNotFoundException -> SyncError.PATH_NOT_FOUND

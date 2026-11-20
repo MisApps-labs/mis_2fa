@@ -29,6 +29,7 @@ import com.ferlagod.mis2fa.data.sync.SyncManager
 import com.ferlagod.mis2fa.data.sync.SyncState
 import com.ferlagod.mis2fa.data.sync.SyncWorker
 import com.ferlagod.mis2fa.data.sync.VaultCodec
+import com.ferlagod.mis2fa.data.sync.NewerVaultVersionException
 import com.ferlagod.mis2fa.data.sync.VaultEnvelope
 import com.ferlagod.mis2fa.data.sync.WrongPasswordException
 import com.ferlagod.mis2fa.model.Token
@@ -282,6 +283,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 )
             }
+        } catch (_: NewerVaultVersionException) {
+            emit(UiEvent.Text(R.string.import_newer_version))
         } catch (e: Exception) {
             Log.w(TAG, "Importación fallida", e)
             emit(UiEvent.Text(R.string.import_unknown_format))
