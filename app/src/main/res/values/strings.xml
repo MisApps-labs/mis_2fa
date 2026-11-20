@@ -73,6 +73,7 @@
     <string name="cd_copy_code">Copy code</string>
     <string name="cd_more_options">More options</string>
     <string name="cd_next_hotp">Generate next code</string>
+    <string name="code_invalid_secret">Invalid secret key: edit the account</string>
     <string name="cd_sync_now">Synced. Tap to sync now</string>
     <string name="cd_sync_error">Sync error</string>
     <string name="code_copied">Code copied</string>

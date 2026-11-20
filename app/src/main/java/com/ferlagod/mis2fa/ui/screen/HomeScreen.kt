@@ -451,7 +451,12 @@ private fun TokenCard(
     modifier: Modifier = Modifier
 ) {
     val haptics = LocalHapticFeedback.current
-    val key = remember(token.secret) { Base32.decodeOrNull(token.secret) ?: ByteArray(0) }
+    // Secreto ilegible (fichero dañado o editado a mano): no se inventa un código.
+    val key = remember(token.secret) { Base32.decodeOrNull(token.secret)?.takeIf { it.isNotEmpty() } }
+    if (key == null) {
+        InvalidTokenCard(token, onLongClick, modifier)
+        return
+    }
     val isTimeBased = token.type != OtpType.HOTP
     // Solo cambia cuando empieza un periodo nuevo: los códigos no se recalculan 10 veces por segundo.
     val step by remember(token.period, token.counter, isTimeBased) {
@@ -546,6 +551,30 @@ private fun TokenCard(
 }
 
 private fun maskFor(code: String): String = OtpGenerator.format("•".repeat(code.length))
+
+/** Cuenta cuyo secreto no se puede leer: se muestra el error y al tocarla se abre su menú. */
+@Composable
+private fun InvalidTokenCard(token: Token, onOpenMenu: () -> Unit, modifier: Modifier = Modifier) {
+    val message = stringResource(R.string.code_invalid_secret)
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = MaterialTheme.colorScheme.surface,
+        onClick = onOpenMenu,
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) { contentDescription = "${token.displayName}, $message" }
+    ) {
+        Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+            TokenAvatar(token.displayName)
+            Spacer(modifier = Modifier.width(14.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                SingleLine(token.displayName, MaterialTheme.typography.titleSmall, MaterialTheme.colorScheme.onSurface)
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(message, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+            }
+        }
+    }
+}
 
 @Composable
 private fun WelcomeContent(actions: HomeActions, syncConfigured: Boolean) {
@@ -657,7 +686,7 @@ private fun TokenActionsSheet(
     onShowQr: () -> Unit,
     onTrash: () -> Unit
 ) {
-    val key = remember(token.secret) { Base32.decodeOrNull(token.secret) ?: ByteArray(0) }
+    val key = remember(token.secret) { Base32.decodeOrNull(token.secret)?.takeIf { it.isNotEmpty() } }
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(modifier = Modifier.padding(bottom = 24.dp)) {
             Row(
@@ -673,9 +702,11 @@ private fun TokenActionsSheet(
                     }
                 }
             }
-            SheetItem(Icons.Rounded.ContentCopy, stringResource(R.string.action_copy), null, { onCopy(OtpGenerator.code(token, now.value, key)) })
-            if (token.type != OtpType.HOTP) {
-                SheetItem(Icons.Rounded.ContentCopy, stringResource(R.string.action_copy_next), null, { onCopy(OtpGenerator.nextCode(token, now.value, key)) })
+            if (key != null) {
+                SheetItem(Icons.Rounded.ContentCopy, stringResource(R.string.action_copy), null, { onCopy(OtpGenerator.code(token, now.value, key)) })
+                if (token.type != OtpType.HOTP) {
+                    SheetItem(Icons.Rounded.ContentCopy, stringResource(R.string.action_copy_next), null, { onCopy(OtpGenerator.nextCode(token, now.value, key)) })
+                }
             }
             SheetItem(
                 if (token.pinned) Icons.Outlined.PushPin else Icons.Rounded.PushPin,

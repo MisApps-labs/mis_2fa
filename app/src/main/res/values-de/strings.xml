@@ -65,6 +65,7 @@
     <string name="cd_copy_code">Code kopieren</string>
     <string name="cd_more_options">Weitere Optionen</string>
     <string name="cd_next_hotp">Nächsten Code erzeugen</string>
+    <string name="code_invalid_secret">Ungültiger geheimer Schlüssel: Konto bearbeiten</string>
     <string name="cd_sync_now">Synchronisiert. Tippen, um jetzt zu synchronisieren</string>
     <string name="cd_sync_error">Synchronisierungsfehler</string>
     <string name="code_copied">Code kopiert</string>

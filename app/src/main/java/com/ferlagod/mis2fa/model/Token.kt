@@ -4,6 +4,7 @@
 
 package com.ferlagod.mis2fa.model
 
+import com.ferlagod.mis2fa.otp.Base32
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
@@ -89,18 +90,25 @@ data class Token(
         val DIGITS_RANGE = 4..10
         val PERIOD_RANGE = 5..300
 
+        /**
+         * Lee una cuenta guardada. Los valores fuera de rango se corrigen en lugar de aceptarse:
+         * un periodo 0 o 12 cifras harían fallar la generación del código cada vez que se dibuja
+         * la pantalla de inicio, y la app no se podría ni abrir. Un secreto no válido se conserva
+         * tal cual (no se pierde) y la interfaz lo muestra como erróneo.
+         */
         fun fromJson(json: JSONObject): Token {
             val type = OtpType.fromName(json.optString("type"))
             return Token(
                 id = json.getString("id"),
                 issuer = json.optString("issuer"),
                 account = json.optString("account"),
-                secret = json.getString("secret"),
+                secret = Base32.normalize(json.getString("secret")),
                 type = type,
-                algorithm = OtpAlgorithm.fromName(json.optString("algorithm")),
-                digits = json.optInt("digits", if (type == OtpType.STEAM) STEAM_DIGITS else DEFAULT_DIGITS),
-                period = json.optInt("period", DEFAULT_PERIOD),
-                counter = json.optLong("counter", 0L),
+                algorithm = if (type == OtpType.STEAM) OtpAlgorithm.SHA1 else OtpAlgorithm.fromName(json.optString("algorithm")),
+                digits = if (type == OtpType.STEAM) STEAM_DIGITS
+                else json.optInt("digits", DEFAULT_DIGITS).coerceIn(DIGITS_RANGE),
+                period = json.optInt("period", DEFAULT_PERIOD).coerceIn(PERIOD_RANGE),
+                counter = json.optLong("counter", 0L).coerceAtLeast(0L),
                 pinned = json.optBoolean("pinned", false),
                 createdAt = json.optLong("createdAt", 0L),
                 updatedAt = json.optLong("updatedAt", 0L),
