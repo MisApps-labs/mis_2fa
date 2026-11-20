@@ -7,6 +7,7 @@ package com.ferlagod.mis2fa.data.remote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Credentials
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,6 +24,9 @@ class WebDavAuthException(code: Int) : WebDavException(code, "Usuario o contrase
 
 /** 409 al crear la carpeta: la ruta WebDAV no existe (usuario o URL mal escritos). */
 class WebDavPathNotFoundException : WebDavException(409, "La ruta WebDAV no existe")
+
+/** La dirección del servidor no es una URL válida. */
+class WebDavInvalidUrlException(url: String) : WebDavException(0, "URL no válida: $url")
 
 /** 412: el fichero remoto cambió desde la última lectura (control de concurrencia optimista). */
 class WebDavPreconditionFailedException : WebDavException(412, "El fichero cambió en el servidor")
@@ -45,7 +49,9 @@ class WebDavClient(
     appPassword: String,
     private val http: OkHttpClient = sharedHttpClient
 ) {
-    private val rootUrl: String = if (rootUrl.endsWith("/")) rootUrl else "$rootUrl/"
+    private val rootUrl: String = (if (rootUrl.endsWith("/")) rootUrl else "$rootUrl/").also {
+        if (it.toHttpUrlOrNull() == null) throw WebDavInvalidUrlException(it)
+    }
     private val authHeader: String = Credentials.basic(username, appPassword, Charsets.UTF_8)
 
     companion object {

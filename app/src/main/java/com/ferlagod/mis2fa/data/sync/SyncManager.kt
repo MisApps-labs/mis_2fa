@@ -14,6 +14,7 @@ import com.ferlagod.mis2fa.data.remote.RemoteFile
 import com.ferlagod.mis2fa.data.remote.WebDavAuthException
 import com.ferlagod.mis2fa.data.remote.WebDavClient
 import com.ferlagod.mis2fa.data.remote.WebDavException
+import com.ferlagod.mis2fa.data.remote.WebDavInvalidUrlException
 import com.ferlagod.mis2fa.data.remote.WebDavPathNotFoundException
 import com.ferlagod.mis2fa.data.remote.WebDavPreconditionFailedException
 import com.ferlagod.mis2fa.data.remote.WebDavTooLargeException
@@ -183,8 +184,8 @@ class SyncManager private constructor(context: Context) {
         mutex.withLock {
             val config = secure.get() ?: throw SyncException(SyncError.UNKNOWN)
             val key = config.key ?: throw SyncException(SyncError.PASSWORD_CHANGED)
-            val client = client(config.credentials)
             try {
+                val client = client(config.credentials)
                 val remote = client.download(FILE_NAME) ?: throw SyncException(SyncError.SERVER)
                 val envelope = VaultCodec.parse(String(remote.bytes, Charsets.UTF_8))
                 if (!envelope.verify(key)) throw SyncException(SyncError.PASSWORD_CHANGED)
@@ -234,12 +235,13 @@ class SyncManager private constructor(context: Context) {
         is InvalidVaultFileException -> SyncError.REMOTE_CORRUPT
         is WebDavAuthException -> SyncError.AUTH
         is WebDavPathNotFoundException -> SyncError.PATH_NOT_FOUND
+        is WebDavInvalidUrlException -> SyncError.PATH_NOT_FOUND
         is WebDavPreconditionFailedException -> SyncError.SERVER
         is WebDavTooLargeException -> SyncError.REMOTE_CORRUPT
         is WebDavException -> if (e.code == 404) SyncError.PATH_NOT_FOUND else SyncError.SERVER
-        is IllegalArgumentException -> SyncError.PATH_NOT_FOUND // URL mal formada
         is IOException -> SyncError.NETWORK
-        is IllegalStateException -> SyncError.LOCAL_UNREADABLE
+        // El check() de TokenRepository cuando la bóveda local no se puede leer.
+        is IllegalStateException -> if (repository.loadFailed.value) SyncError.LOCAL_UNREADABLE else SyncError.UNKNOWN
         else -> SyncError.UNKNOWN
     }
 
