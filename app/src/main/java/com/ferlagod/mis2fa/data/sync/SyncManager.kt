@@ -16,6 +16,7 @@ import com.ferlagod.mis2fa.data.remote.WebDavClient
 import com.ferlagod.mis2fa.data.remote.WebDavException
 import com.ferlagod.mis2fa.data.remote.WebDavPathNotFoundException
 import com.ferlagod.mis2fa.data.remote.WebDavPreconditionFailedException
+import com.ferlagod.mis2fa.data.remote.WebDavTooLargeException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -234,6 +235,7 @@ class SyncManager private constructor(context: Context) {
         is WebDavAuthException -> SyncError.AUTH
         is WebDavPathNotFoundException -> SyncError.PATH_NOT_FOUND
         is WebDavPreconditionFailedException -> SyncError.SERVER
+        is WebDavTooLargeException -> SyncError.REMOTE_CORRUPT
         is WebDavException -> if (e.code == 404) SyncError.PATH_NOT_FOUND else SyncError.SERVER
         is IllegalArgumentException -> SyncError.PATH_NOT_FOUND // URL mal formada
         is IOException -> SyncError.NETWORK

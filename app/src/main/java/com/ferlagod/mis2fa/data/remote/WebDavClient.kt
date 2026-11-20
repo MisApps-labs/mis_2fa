@@ -27,6 +27,9 @@ class WebDavPathNotFoundException : WebDavException(409, "La ruta WebDAV no exis
 /** 412: el fichero remoto cambió desde la última lectura (control de concurrencia optimista). */
 class WebDavPreconditionFailedException : WebDavException(412, "El fichero cambió en el servidor")
 
+/** El fichero remoto supera [WebDavClient.MAX_DOWNLOAD_BYTES]: no es una bóveda de Mis 2FA. */
+class WebDavTooLargeException : WebDavException(413, "El fichero del servidor es demasiado grande")
+
 /** Fichero descargado junto con su ETag. */
 class RemoteFile(val bytes: ByteArray, val etag: String?)
 
@@ -47,6 +50,12 @@ class WebDavClient(
 
     companion object {
         private const val USER_AGENT = "Mis2FA-Android"
+
+        /**
+         * Una bóveda con miles de cuentas ocupa unos cientos de KB. Más que esto es un error del
+         * servidor (o un fichero ajeno) y cargarlo entero en memoria podría cerrar la app.
+         */
+        const val MAX_DOWNLOAD_BYTES = 5L * 1024 * 1024
         private val XML = "application/xml; charset=utf-8".toMediaType()
         private const val PROPFIND_BODY = """<?xml version="1.0" encoding="utf-8" ?>
 <d:propfind xmlns:d="DAV:"><d:prop><d:resourcetype/><d:getetag/></d:prop></d:propfind>"""
@@ -105,7 +114,13 @@ class WebDavClient(
             response.throwIfAuthError()
             if (response.code == 404) return@withContext null
             if (!response.isSuccessful) throw WebDavException(response.code, "Error al descargar $name (${response.code})")
-            RemoteFile(response.body?.bytes() ?: ByteArray(0), normalizeEtag(response.header("OC-ETag") ?: response.header("ETag")))
+            val body = response.body ?: return@withContext RemoteFile(ByteArray(0), null)
+            if (body.contentLength() > MAX_DOWNLOAD_BYTES) throw WebDavTooLargeException()
+            // contentLength puede ser -1 (chunked): se lee como mucho un byte más del límite.
+            val source = body.source()
+            source.request(MAX_DOWNLOAD_BYTES + 1)
+            if (source.buffer.size > MAX_DOWNLOAD_BYTES) throw WebDavTooLargeException()
+            RemoteFile(source.buffer.readByteArray(), normalizeEtag(response.header("OC-ETag") ?: response.header("ETag")))
         }
     }
 
