@@ -183,4 +183,31 @@ class SyncAndBackupTest {
         assertTrue(merged.tokens.isEmpty())
         assertEquals(setOf("a"), merged.tombstones.keys)
     }
+
+    @Test
+    fun tombstoneAtSameMomentAsEditDeletes() {
+        // Empate exacto: el borrado gana (deletedAt >= updatedAt).
+        val merged = SyncMerger.merge(VaultData(listOf(token("a", 100))), VaultData(tombstones = mapOf("a" to 100L)))
+        assertTrue(merged.tokens.isEmpty())
+    }
+
+    @Test
+    fun editOneMillisecondAfterDeleteSurvivesOnBothDevices() {
+        val edited = VaultData(listOf(token("a", 101, "Editada")))
+        val deleted = VaultData(tombstones = mapOf("a" to 100L))
+        val x = SyncMerger.merge(edited, deleted)
+        val y = SyncMerger.merge(deleted, edited)
+        assertEquals("Editada", x.tokens.single().issuer)
+        assertTrue(SyncMerger.sameContent(x, y))
+    }
+
+    @Test
+    fun hotpCounterNeverGoesBackEvenIfOlderVersionWins() {
+        val newerEdit = token("a", 200, "Nuevo nombre", counter = 3)
+        val olderButAdvanced = token("a", 150, counter = 9)
+        val merged = SyncMerger.merge(VaultData(listOf(newerEdit)), VaultData(listOf(olderButAdvanced)))
+        val t = merged.tokens.single()
+        assertEquals("Nuevo nombre", t.issuer)
+        assertEquals(9L, t.counter)
+    }
 }
