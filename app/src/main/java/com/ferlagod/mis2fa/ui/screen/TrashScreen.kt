@@ -125,7 +125,7 @@ fun TrashScreen(
                     modifier = Modifier.fillMaxWidth().widthIn(max = READABLE_MAX_WIDTH).animateItem()
                 ) {
                     Row(modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        TokenAvatar(token.displayName, size = 40.dp)
+                        TokenAvatar(token.displayName, icon = token.icon, size = 40.dp)
                         Spacer(modifier = Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             SingleLine(token.displayName, MaterialTheme.typography.titleSmall, MaterialTheme.colorScheme.onSurface)

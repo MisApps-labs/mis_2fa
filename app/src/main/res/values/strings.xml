@@ -286,4 +286,22 @@
     </plurals>
     <string name="error_wrong_password">Wrong password</string>
     <string name="time_just_now">Just now</string>
+
+    <!-- Service icons -->
+    <string name="icon_search">Find icon online</string>
+    <string name="icon_remove">Remove icon</string>
+    <string name="icon_search_title">Service icon</string>
+    <string name="icon_search_desc">Mis 2FA will download the icon directly from this website. The site will see your IP address, just as when you visit it; nothing about your account is sent.</string>
+    <string name="icon_domain">Service website</string>
+    <string name="icon_domain_invalid">Enter a domain, e.g. github.com</string>
+    <string name="icon_not_found">No icon found on this website</string>
+    <string name="icon_download">Download</string>
+    <string name="icons_fetch_all">Download service icons</string>
+    <string name="icons_fetch_all_desc">Looks up the icon of each account that has none on the service’s own website</string>
+    <string name="icons_none_missing">Every account with a service name already has an icon. To change one, edit the account.</string>
+    <string name="icons_fetched">Icons found: %1$d of %2$d</string>
+    <plurals name="icons_fetch_confirm">
+        <item quantity="one">The icon of %d account will be looked up on its service’s website (guessed from the service name). Each website will see your IP address; nothing about your accounts is sent.</item>
+        <item quantity="other">The icons of %d accounts will be looked up on each service’s website (guessed from the service name). Each website will see your IP address; nothing about your accounts is sent.</item>
+    </plurals>
 </resources>

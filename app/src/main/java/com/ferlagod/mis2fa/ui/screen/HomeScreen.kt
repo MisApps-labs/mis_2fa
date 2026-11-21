@@ -506,7 +506,7 @@ private fun TokenCard(
                 .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TokenAvatar(token.displayName)
+            TokenAvatar(token.displayName, icon = token.icon)
             Spacer(modifier = Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -572,7 +572,7 @@ private fun InvalidTokenCard(token: Token, onOpenMenu: () -> Unit, modifier: Mod
             .semantics(mergeDescendants = true) { contentDescription = "${token.displayName}, $message" }
     ) {
         Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            TokenAvatar(token.displayName)
+            TokenAvatar(token.displayName, icon = token.icon)
             Spacer(modifier = Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
                 SingleLine(token.displayName, MaterialTheme.typography.titleSmall, MaterialTheme.colorScheme.onSurface)
@@ -700,7 +700,7 @@ private fun TokenActionsSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
             ) {
-                TokenAvatar(token.displayName, size = 40.dp)
+                TokenAvatar(token.displayName, icon = token.icon, size = 40.dp)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     SingleLine(token.displayName, MaterialTheme.typography.titleMedium, MaterialTheme.colorScheme.onSurface)

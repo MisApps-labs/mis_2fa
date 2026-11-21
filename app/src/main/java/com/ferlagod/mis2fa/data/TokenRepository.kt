@@ -96,6 +96,9 @@ class TokenRepository private constructor(context: Context) {
         current.copy(tokens = current.tokens.map { if (it.id in ids) change(it).copy(updatedAt = stamp(it.updatedAt)) else it })
     }
 
+    /** Pone los iconos descargados (id → icono) de una vez, para guardar y sincronizar una sola vez. */
+    suspend fun setIcons(icons: Map<String, String>) = modify(icons.keys) { it.copy(icon = icons[it.id]) }
+
     suspend fun setPinned(id: String, pinned: Boolean) = modify(listOf(id)) { it.copy(pinned = pinned) }
 
     suspend fun trash(ids: Collection<String>) = modify(ids) { it.copy(trashedAt = System.currentTimeMillis()) }

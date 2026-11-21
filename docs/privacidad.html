@@ -121,6 +121,9 @@
       <li>Tu usuario y tu contraseña de aplicación se envían a tu servidor para identificarte, igual que en cualquier cliente de Nextcloud.</li>
     </ul>
     <p>Si olvidas la contraseña maestra, nadie puede descifrar la copia guardada en el servidor, tampoco el desarrollador.</p>
+
+    <h3>Iconos de los servicios (opcional)</h3>
+    <p>Si pulsas "Buscar icono en la web" al editar una cuenta, o "Descargar iconos de los servicios" en Ajustes, la app se conecta <strong>directamente a la web de ese servicio</strong> (por ejemplo, github.com) por HTTPS para descargar su icono. No se usan servicios intermediarios. Esa web ve tu dirección IP y que se ha pedido su icono, igual que si la visitaras con el navegador; no se le envía nada de tu cuenta (ni el nombre de usuario ni la clave). El icono se guarda cifrado junto a la cuenta. Si no lo pides nunca, la app no hace ninguna de estas conexiones.</p>
   </section>
 
   <section>
@@ -128,7 +131,7 @@
     <table>
       <tr><th>Permiso</th><th>Para qué se usa</th></tr>
       <tr><td>Cámara</td><td>Escanear los códigos QR de las webs, solo mientras tienes abierto el escáner. Las imágenes se analizan en el teléfono y no se guardan ni se envían a ningún sitio.</td></tr>
-      <tr><td>Internet y estado de la red</td><td>Sincronizar con tu servidor Nextcloud, solo si la has activado.</td></tr>
+      <tr><td>Internet y estado de la red</td><td>Sincronizar con tu servidor Nextcloud, solo si la has activado, y descargar los iconos de los servicios, solo cuando lo pides.</td></tr>
       <tr><td>Biometría</td><td>Desbloquear la app con huella, cara o PIN. La verificación la hace el sistema Android: la app nunca accede a tus datos biométricos.</td></tr>
       <tr><td>Ejecutar en segundo plano, mantener el dispositivo activo e iniciar al encender</td><td>Los usa el sistema de tareas de Android (WorkManager) para sincronizar con tu Nextcloud, solo si la sincronización está activada.</td></tr>
     </table>

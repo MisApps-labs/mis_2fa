@@ -441,7 +441,8 @@ private fun AppNavigation(
                 onSave = { token ->
                     viewModel.saveToken(token, isNew = existing == null) { navController.popBackStack(Routes.HOME, inclusive = false) }
                 },
-                onRevealSecret = requireAuth
+                onRevealSecret = requireAuth,
+                onFetchIcon = viewModel::fetchIcon
             )
         }
 
@@ -480,6 +481,8 @@ private fun AppNavigation(
                     requireAuth = requireAuth,
                     onImport = ::launchImport,
                     onOpenTrash = { navController.navigate(Routes.TRASH) },
+                    countAccountsWithoutIcon = { viewModel.accountsWithoutIcon().size },
+                    onFetchMissingIcons = viewModel::fetchMissingIcons,
                     onOpenTutorial = { navController.navigate(Routes.TUTORIAL) },
                     onLanguageSelected = onLanguageSelected
                 )

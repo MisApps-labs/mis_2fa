@@ -5,6 +5,7 @@
 package com.ferlagod.mis2fa.ui.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,8 +55,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -69,7 +72,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.get
 import com.ferlagod.mis2fa.R
+import com.ferlagod.mis2fa.data.remote.ServiceIcons
 import com.ferlagod.mis2fa.otp.OtpGenerator
 import com.ferlagod.mis2fa.ui.theme.AccentOrange
 import com.ferlagod.mis2fa.ui.theme.AccentRed
@@ -78,9 +83,34 @@ import com.ferlagod.mis2fa.ui.theme.avatarColorFor
 /** Ancho máximo del contenido en tablets y móviles plegables. */
 val READABLE_MAX_WIDTH = 640.dp
 
-/** Círculo de color con la inicial del emisor. */
+/**
+ * Icono del servicio si se ha descargado ([icon], PNG en Base64); si no, círculo de color con la
+ * inicial del emisor.
+ */
 @Composable
-fun TokenAvatar(name: String, modifier: Modifier = Modifier, size: Dp = 44.dp) {
+fun TokenAvatar(name: String, modifier: Modifier = Modifier, icon: String? = null, size: Dp = 44.dp) {
+    val image = remember(icon) { icon?.let(ServiceIcons::decode) }
+    if (image != null) {
+        // Un icono con fondo propio (esquinas opacas) llena el círculo; uno con transparencia va
+        // con margen sobre blanco, para que los logotipos oscuros se vean también en el tema oscuro.
+        val filled = remember(image) { Color(image[0, 0]).alpha > 0.9f && Color(image[image.width - 1, image.height - 1]).alpha > 0.9f }
+        val bitmap = remember(image) { image.asImageBitmap() }
+        Box(
+            modifier = modifier
+                .size(size)
+                .clip(CircleShape)
+                .background(Color.White),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                bitmap = bitmap,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(if (filled) size else size * 0.68f)
+            )
+        }
+        return
+    }
     val color = avatarColorFor(name)
     val initial = name.trim().firstOrNull { it.isLetterOrDigit() }?.uppercaseChar()?.toString() ?: "?"
     Box(

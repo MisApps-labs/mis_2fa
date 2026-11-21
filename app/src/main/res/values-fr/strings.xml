@@ -278,4 +278,23 @@
     </plurals>
     <string name="error_wrong_password">Mot de passe incorrect</string>
     <string name="time_just_now">À l\'instant</string>
+
+    <!-- Service icons -->
+    <string name="icon_search">Chercher l’icône en ligne</string>
+    <string name="icon_remove">Retirer l’icône</string>
+    <string name="icon_search_title">Icône du service</string>
+    <string name="icon_search_desc">Mis 2FA téléchargera l’icône directement depuis ce site. Le site verra votre adresse IP, comme lors d’une visite ; rien de votre compte n’est envoyé.</string>
+    <string name="icon_domain">Site du service</string>
+    <string name="icon_domain_invalid">Saisissez un domaine, p. ex. github.com</string>
+    <string name="icon_not_found">Aucune icône trouvée sur ce site</string>
+    <string name="icon_download">Télécharger</string>
+    <string name="icons_fetch_all">Télécharger les icônes des services</string>
+    <string name="icons_fetch_all_desc">Cherche sur le site de chaque service l’icône des comptes qui n’en ont pas</string>
+    <string name="icons_none_missing">Tous les comptes avec un nom de service ont déjà une icône. Pour en changer une, modifiez le compte.</string>
+    <string name="icons_fetched">Icônes trouvées : %1$d sur %2$d</string>
+    <plurals name="icons_fetch_confirm">
+        <item quantity="one">L’icône de %d compte sera cherchée sur le site de son service (déduit du nom du service). Chaque site verra votre adresse IP ; rien de vos comptes n’est envoyé.</item>
+        <item quantity="many">Les icônes de %d comptes seront cherchées sur le site de chaque service (déduit du nom du service). Chaque site verra votre adresse IP ; rien de vos comptes n’est envoyé.</item>
+        <item quantity="other">Les icônes de %d comptes seront cherchées sur le site de chaque service (déduit du nom du service). Chaque site verra votre adresse IP ; rien de vos comptes n’est envoyé.</item>
+    </plurals>
 </resources>

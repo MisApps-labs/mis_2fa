@@ -21,19 +21,24 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.HideImage
+import androidx.compose.material.icons.rounded.ImageSearch
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -49,6 +54,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -62,6 +68,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.ferlagod.mis2fa.R
+import com.ferlagod.mis2fa.data.remote.ServiceIcons
 import com.ferlagod.mis2fa.model.OtpAlgorithm
 import com.ferlagod.mis2fa.model.OtpType
 import com.ferlagod.mis2fa.model.Token
@@ -70,12 +77,14 @@ import com.ferlagod.mis2fa.otp.OtpGenerator
 import com.ferlagod.mis2fa.ui.components.READABLE_MAX_WIDTH
 import com.ferlagod.mis2fa.ui.components.TokenAvatar
 import com.ferlagod.mis2fa.ui.theme.CodeTextStyle
+import kotlinx.coroutines.launch
 
 /**
  * Alta manual o edición de una cuenta.
  *
  * @param existing la cuenta a editar, o null para una nueva.
  * @param onRevealSecret pide autenticación antes de mostrar la clave secreta de una cuenta existente.
+ * @param onFetchIcon descarga el icono de un dominio (null si no se encuentra).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +92,8 @@ fun EditTokenScreen(
     existing: Token?,
     onBack: () -> Unit,
     onSave: (Token) -> Unit,
-    onRevealSecret: (onGranted: () -> Unit) -> Unit
+    onRevealSecret: (onGranted: () -> Unit) -> Unit,
+    onFetchIcon: suspend (domain: String) -> String?
 ) {
     val isNew = existing == null
     var issuer by rememberSaveable { mutableStateOf(existing?.issuer.orEmpty()) }
@@ -98,6 +108,8 @@ fun EditTokenScreen(
     var showAdvanced by rememberSaveable {
         mutableStateOf(existing != null && (existing.type != OtpType.TOTP || existing.algorithm != OtpAlgorithm.SHA1 || existing.digits != 6 || existing.period != 30))
     }
+    var icon by rememberSaveable { mutableStateOf(existing?.icon) }
+    var showIconSearch by rememberSaveable { mutableStateOf(false) }
     var triedSave by remember { mutableStateOf(false) }
 
     val secretValid = Base32.isValid(secret)
@@ -120,7 +132,8 @@ fun EditTokenScreen(
             algorithm = if (type == OtpType.STEAM) OtpAlgorithm.SHA1 else algorithm,
             digits = if (type == OtpType.STEAM) Token.STEAM_DIGITS else digitsValue ?: Token.DEFAULT_DIGITS,
             period = periodValue?.takeIf { type == OtpType.TOTP } ?: Token.DEFAULT_PERIOD,
-            counter = counterValue ?: 0L
+            counter = counterValue ?: 0L,
+            icon = icon
         )
     }
 
@@ -162,6 +175,27 @@ fun EditTokenScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
+
+            // --- Icono del servicio ---
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                TokenAvatar(issuer.ifBlank { account }, icon = icon, size = 56.dp)
+                Spacer(modifier = Modifier.width(8.dp))
+                Column {
+                    TextButton(onClick = { showIconSearch = true }) {
+                        Icon(Icons.Rounded.ImageSearch, contentDescription = null)
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(stringResource(R.string.icon_search))
+                    }
+                    if (icon != null) {
+                        TextButton(onClick = { icon = null }) {
+                            Icon(Icons.Rounded.HideImage, contentDescription = null)
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text(stringResource(R.string.icon_remove))
+                        }
+                    }
+                }
+            }
+
             OutlinedTextField(
                 value = issuer,
                 onValueChange = { issuer = it },
@@ -304,7 +338,7 @@ fun EditTokenScreen(
                 if (preview != null) {
                     Surface(shape = RoundedCornerShape(18.dp), color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
                         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            TokenAvatar(issuer.ifBlank { account })
+                            TokenAvatar(issuer.ifBlank { account }, icon = icon)
                             Spacer(modifier = Modifier.width(14.dp))
                             Column {
                                 Text(stringResource(R.string.preview), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -326,6 +360,76 @@ fun EditTokenScreen(
             }
         }
     }
+
+    if (showIconSearch) {
+        IconSearchDialog(
+            issuer = issuer.ifBlank { account },
+            onFetch = onFetchIcon,
+            onFound = { icon = it; showIconSearch = false },
+            onDismiss = { showIconSearch = false }
+        )
+    }
+}
+
+/** Pide el dominio del servicio (con una propuesta a partir del emisor) y descarga su icono. */
+@Composable
+private fun IconSearchDialog(
+    issuer: String,
+    onFetch: suspend (String) -> String?,
+    onFound: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var domain by rememberSaveable { mutableStateOf(ServiceIcons.guessDomain(issuer).orEmpty()) }
+    var loading by remember { mutableStateOf(false) }
+    var notFound by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val host = ServiceIcons.normalizeDomain(domain)
+
+    fun download() {
+        if (host == null || loading) return
+        loading = true
+        notFound = false
+        scope.launch {
+            val result = onFetch(host)
+            loading = false
+            if (result != null) onFound(result) else notFound = true
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = { if (!loading) onDismiss() },
+        title = { Text(stringResource(R.string.icon_search_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(stringResource(R.string.icon_search_desc), style = MaterialTheme.typography.bodyMedium)
+                OutlinedTextField(
+                    value = domain,
+                    onValueChange = { domain = it; notFound = false },
+                    label = { Text(stringResource(R.string.icon_domain)) },
+                    placeholder = { Text("github.com") },
+                    singleLine = true,
+                    enabled = !loading,
+                    isError = notFound || (domain.isNotBlank() && host == null),
+                    supportingText = when {
+                        notFound -> { { Text(stringResource(R.string.icon_not_found)) } }
+                        domain.isNotBlank() && host == null -> { { Text(stringResource(R.string.icon_domain_invalid)) } }
+                        else -> null
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrectEnabled = false, imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(onSearch = { download() }),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                if (loading) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = ::download, enabled = host != null && !loading) { Text(stringResource(R.string.icon_download)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, enabled = !loading) { Text(stringResource(R.string.cancel)) }
+        }
+    )
 }
 
 @Composable

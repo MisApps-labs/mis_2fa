@@ -270,4 +270,22 @@
     </plurals>
     <string name="error_wrong_password">Falsches Passwort</string>
     <string name="time_just_now">Gerade eben</string>
+
+    <!-- Service icons -->
+    <string name="icon_search">Symbol online suchen</string>
+    <string name="icon_remove">Symbol entfernen</string>
+    <string name="icon_search_title">Dienstsymbol</string>
+    <string name="icon_search_desc">Mis 2FA lädt das Symbol direkt von dieser Website. Die Website sieht deine IP-Adresse wie bei einem Besuch; von deinem Konto wird nichts gesendet.</string>
+    <string name="icon_domain">Website des Dienstes</string>
+    <string name="icon_domain_invalid">Gib eine Domain ein, z. B. github.com</string>
+    <string name="icon_not_found">Auf dieser Website wurde kein Symbol gefunden</string>
+    <string name="icon_download">Herunterladen</string>
+    <string name="icons_fetch_all">Dienstsymbole herunterladen</string>
+    <string name="icons_fetch_all_desc">Sucht für jedes Konto ohne Symbol auf der Website des Dienstes danach</string>
+    <string name="icons_none_missing">Alle Konten mit Dienstnamen haben bereits ein Symbol. Um eines zu ändern, bearbeite das Konto.</string>
+    <string name="icons_fetched">Gefundene Symbole: %1$d von %2$d</string>
+    <plurals name="icons_fetch_confirm">
+        <item quantity="one">Das Symbol von %d Konto wird auf der Website seines Dienstes gesucht (aus dem Dienstnamen abgeleitet). Jede Website sieht deine IP-Adresse; von deinen Konten wird nichts gesendet.</item>
+        <item quantity="other">Die Symbole von %d Konten werden auf der Website des jeweiligen Dienstes gesucht (aus dem Dienstnamen abgeleitet). Jede Website sieht deine IP-Adresse; von deinen Konten wird nichts gesendet.</item>
+    </plurals>
 </resources>

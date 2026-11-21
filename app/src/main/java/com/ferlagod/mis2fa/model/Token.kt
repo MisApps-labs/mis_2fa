@@ -43,6 +43,7 @@ enum class OtpAlgorithm(val jcaName: String) {
  *
  * [secret] se guarda en Base32 normalizado (mayúsculas, sin espacios ni relleno).
  * [updatedAt] decide qué versión gana al sincronizar; [trashedAt] marca la papelera.
+ * [icon] no forma parte de la identidad de la cuenta.
  */
 data class Token(
     val id: String = UUID.randomUUID().toString(),
@@ -55,6 +56,8 @@ data class Token(
     val period: Int = DEFAULT_PERIOD,
     val counter: Long = 0L,
     val pinned: Boolean = false,
+    /** Icono del servicio (PNG en Base64) descargado de su web a petición del usuario; null = inicial. */
+    val icon: String? = null,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = createdAt,
     val trashedAt: Long? = null
@@ -78,6 +81,7 @@ data class Token(
         put("period", period)
         put("counter", counter)
         put("pinned", pinned)
+        if (icon != null) put("icon", icon)
         put("createdAt", createdAt)
         put("updatedAt", updatedAt)
         if (trashedAt != null) put("trashedAt", trashedAt)
@@ -89,6 +93,8 @@ data class Token(
         const val STEAM_DIGITS = 5
         val DIGITS_RANGE = 4..10
         val PERIOD_RANGE = 5..300
+        /** Tamaño máximo (en Base64) de un icono guardado. */
+        const val MAX_ICON_CHARS = 64 * 1024
 
         /**
          * Lee una cuenta guardada. Los valores fuera de rango se corrigen en lugar de aceptarse:
@@ -110,6 +116,8 @@ data class Token(
                 period = json.optInt("period", DEFAULT_PERIOD).coerceIn(PERIOD_RANGE),
                 counter = json.optLong("counter", 0L).coerceAtLeast(0L),
                 pinned = json.optBoolean("pinned", false),
+                // Un icono desmesurado se descarta: no hace falta para generar códigos.
+                icon = json.optString("icon").takeIf { it.isNotEmpty() && it.length <= MAX_ICON_CHARS },
                 createdAt = json.optLong("createdAt", 0L),
                 updatedAt = json.optLong("updatedAt", 0L),
                 trashedAt = if (json.has("trashedAt") && !json.isNull("trashedAt")) json.getLong("trashedAt") else null

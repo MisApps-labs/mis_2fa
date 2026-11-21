@@ -26,6 +26,7 @@ Forma parte de la familia **Mis Apps** junto a [Mis Notas](https://github.com/Mi
 - **Importa desde otras apps**: Google Authenticator (QR de "Transferir cuentas", también en varios lotes), Aegis y 2FAS (exportación sin cifrar), Ente Auth (exportación en texto), Bitwarden, Proton Pass y cualquier lista de enlaces `otpauth://`.
 - **Todos los tipos de código**: TOTP (por tiempo), HOTP (por contador) y Steam Guard; SHA-1, SHA-256 y SHA-512; de 4 a 10 cifras; cualquier periodo.
 - **Pensada para usarse rápido**: toca un código para copiarlo, mira el **siguiente código** cuando al actual le quedan pocos segundos, anillo de cuenta atrás que se pone rojo al final, búsqueda que ignora acentos, cuentas fijadas arriba.
+- **Iconos de los servicios**, solo si los pides: se descargan directamente de la web de cada servicio (sin intermediarios que recopilen favicons) y se guardan cifrados en la bóveda, así que se sincronizan con el resto de tus dispositivos. Sin descargarlos, cada cuenta muestra su inicial.
 - **Papelera sin vaciado automático**: borrar una cuenta por error nunca hace que la pierdas. Al mandar algo a la papelera puedes pulsar "Deshacer".
 - **Transferir una cuenta** a otro dispositivo mostrando su QR (pide tu huella antes).
 - **Copias de seguridad**: exportación cifrada con contraseña (recomendada) o en texto `otpauth://` para cambiar de app.

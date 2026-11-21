@@ -47,6 +47,7 @@ Cada bloque cifrado es `IV (12 bytes) ‖ texto cifrado ‖ etiqueta (16 bytes)`
       "period": 30,
       "counter": 0,
       "pinned": false,
+      "icon": "iVBORw0KGgo…",
       "createdAt": 1763540000000,
       "updatedAt": 1763540000000,
       "trashedAt": 1763600000000
@@ -58,6 +59,7 @@ Cada bloque cifrado es `IV (12 bytes) ‖ texto cifrado ‖ etiqueta (16 bytes)`
 
 - `type`: `TOTP`, `HOTP` o `STEAM`. `algorithm`: `SHA1`, `SHA256` o `SHA512`.
 - `secret`: Base32 (RFC 4648) en mayúsculas, sin espacios ni relleno.
+- `icon`: opcional. Icono del servicio como PNG de 96 px en Base64 (máx. 64 KB); se ignora si es mayor.
 - `trashedAt`: solo si la cuenta está en la papelera.
 - `tombstones`: cuentas eliminadas definitivamente (id → momento del borrado).
 - Fechas en milisegundos desde 1970 (UTC). Cada modificación local garantiza un `updatedAt` mayor que el anterior aunque el reloj retroceda.

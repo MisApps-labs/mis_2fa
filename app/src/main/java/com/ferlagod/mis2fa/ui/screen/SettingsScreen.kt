@@ -46,6 +46,7 @@ import androidx.compose.material.icons.rounded.Description
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.EnhancedEncryption
 import androidx.compose.material.icons.rounded.Fingerprint
+import androidx.compose.material.icons.rounded.ImageSearch
 import androidx.compose.material.icons.rounded.Key
 import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.LinkOff
@@ -58,6 +59,7 @@ import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -153,6 +155,9 @@ class SettingsActions(
     val requireAuth: (onGranted: () -> Unit) -> Unit,
     val onImport: () -> Unit,
     val onOpenTrash: () -> Unit,
+    /** Cuántas cuentas no tienen icono (y tienen emisor). */
+    val countAccountsWithoutIcon: () -> Int,
+    val onFetchMissingIcons: () -> Unit,
     val onOpenTutorial: () -> Unit,
     val onLanguageSelected: (AppLanguage) -> Unit
 )
@@ -173,6 +178,7 @@ fun SettingsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     var showPlainWarning by rememberSaveable { mutableStateOf(false) }
+    var iconsToFetch by rememberSaveable { mutableStateOf<Int?>(null) }
 
     val exportEncryptedLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         if (uri != null) actions.onExportEncrypted(uri)
@@ -340,6 +346,14 @@ fun SettingsScreen(
                     label = { sortLabel(it) },
                     onSelect = actions.onSortOrderChange
                 )
+                SettingsDivider()
+                ActionRow(
+                    icon = Icons.Rounded.ImageSearch,
+                    title = stringResource(R.string.icons_fetch_all),
+                    subtitle = stringResource(R.string.icons_fetch_all_desc),
+                    enabled = !busy && accountCount > 0,
+                    onClick = { iconsToFetch = actions.countAccountsWithoutIcon() }
+                )
             }
 
             // --- Copias de seguridad ---
@@ -409,6 +423,28 @@ fun SettingsScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
+        }
+    }
+
+    iconsToFetch?.let { count ->
+        if (count == 0) {
+            AlertDialog(
+                onDismissRequest = { iconsToFetch = null },
+                title = { Text(stringResource(R.string.icons_fetch_all)) },
+                text = { Text(stringResource(R.string.icons_none_missing)) },
+                confirmButton = { TextButton(onClick = { iconsToFetch = null }) { Text(stringResource(R.string.close)) } }
+            )
+        } else {
+            ConfirmDialog(
+                title = stringResource(R.string.icons_fetch_all),
+                message = pluralStringResource(R.plurals.icons_fetch_confirm, count, count),
+                confirmLabel = stringResource(R.string.icon_download),
+                onDismiss = { iconsToFetch = null },
+                onConfirm = {
+                    iconsToFetch = null
+                    actions.onFetchMissingIcons()
+                }
+            )
         }
     }
 

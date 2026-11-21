@@ -290,4 +290,23 @@
     </plurals>
     <string name="error_wrong_password">Contraseña incorrecta</string>
     <string name="time_just_now">Ahora mismo</string>
+
+    <!-- Service icons -->
+    <string name="icon_search">Buscar icono en la web</string>
+    <string name="icon_remove">Quitar icono</string>
+    <string name="icon_search_title">Icono del servicio</string>
+    <string name="icon_search_desc">Mis 2FA descargará el icono directamente de esta web. La web verá tu dirección IP, igual que al visitarla; no se envía nada de tu cuenta.</string>
+    <string name="icon_domain">Web del servicio</string>
+    <string name="icon_domain_invalid">Escribe un dominio, p. ej. github.com</string>
+    <string name="icon_not_found">No se ha encontrado ningún icono en esta web</string>
+    <string name="icon_download">Descargar</string>
+    <string name="icons_fetch_all">Descargar iconos de los servicios</string>
+    <string name="icons_fetch_all_desc">Busca en la web de cada servicio el icono de las cuentas que no lo tienen</string>
+    <string name="icons_none_missing">Todas las cuentas con nombre de servicio ya tienen icono. Para cambiar uno, edita la cuenta.</string>
+    <string name="icons_fetched">Iconos encontrados: %1$d de %2$d</string>
+    <plurals name="icons_fetch_confirm">
+        <item quantity="one">Se buscará el icono de %d cuenta en la web de su servicio (deducida del nombre del servicio). Cada web verá tu dirección IP; no se envía nada de tus cuentas.</item>
+        <item quantity="many">Se buscarán los iconos de %d cuentas en la web de cada servicio (deducida del nombre del servicio). Cada web verá tu dirección IP; no se envía nada de tus cuentas.</item>
+        <item quantity="other">Se buscarán los iconos de %d cuentas en la web de cada servicio (deducida del nombre del servicio). Cada web verá tu dirección IP; no se envía nada de tus cuentas.</item>
+    </plurals>
 </resources>

@@ -42,4 +42,12 @@ class TokenJsonTest {
         val original = Token(id = "x", issuer = "A", account = "b", secret = "JBSWY3DPEHPK3PXP", digits = 8, period = 60, type = OtpType.TOTP)
         assertEquals(original, Token.fromJson(original.toJson()))
     }
+
+    @Test
+    fun iconSurvivesRoundTripAndOversizedIconIsDropped() {
+        val token = parse("icon" to "iVBORw0KGgo=")
+        assertEquals("iVBORw0KGgo=", Token.fromJson(token.toJson()).icon)
+        assertEquals(null, parse().icon)
+        assertEquals(null, parse("icon" to "A".repeat(Token.MAX_ICON_CHARS + 1)).icon)
+    }
 }

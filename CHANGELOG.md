@@ -31,6 +31,7 @@ Primera versión (versionCode 2, con las correcciones de la revisión de segurid
 - Más tests: importación con ids repetidos, datos fuera de rango, rutas WebDAV, caducidad de lápidas y casos límite de la fusión.
 
 ### Añadido
+- Iconos de los servicios, descargados a petición directamente de la web de cada servicio (en cada cuenta o todos a la vez desde Ajustes). Se guardan cifrados en la bóveda y se sincronizan.
 - Códigos TOTP, HOTP y Steam Guard (SHA-1, SHA-256 y SHA-512; de 4 a 10 cifras; cualquier periodo).
 - Añadir cuentas escaneando un QR (CameraX + ZXing, sin servicios de Google), desde una imagen, escribiendo la clave o abriendo un enlace `otpauth://` (con confirmación).
 - Importar desde Google Authenticator (QR de transferencia, también en varios lotes), Aegis y 2FAS (sin cifrar), Ente Auth (texto) y listas de enlaces `otpauth://`.

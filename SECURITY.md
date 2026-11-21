@@ -54,6 +54,13 @@ Mis 2FA protege tus claves secretas frente a:
 - Las redirecciones HTTP no se siguen (las credenciales nunca se envían a otro sitio).
 - Autenticación con *contraseña de aplicación* de Nextcloud (HTTP Basic sobre TLS).
 
+### Iconos de los servicios
+
+- Solo se descargan cuando el usuario lo pide (en una cuenta o en Ajustes, con confirmación), **directamente de la web del servicio**: no se usa ningún servicio de favicons de terceros, que vería la lista completa de cuentas. La web del servicio ve la IP y que se pide su icono; no se envía nada de la cuenta.
+- Cliente HTTP aparte, sin credenciales ni cookies. Aquí sí se siguen las redirecciones (muchas webs mandan a `www.`), siempre HTTPS.
+- Límites: 512 KB de HTML, 1 MB por imagen, como mucho 8 imágenes por dominio y 4096 px de lado. La imagen se decodifica con `BitmapFactory` del sistema (no se aceptan SVG) y se vuelve a codificar como PNG de 96 px, así que a la bóveda nunca llega el fichero original.
+- El icono (PNG en Base64, máximo 48 KB) va dentro de la bóveda cifrada; al leerla se descarta cualquier icono de más de 64 KB.
+
 ## Integridad y disponibilidad
 
 - **Escritura atómica** de la bóveda local e **instantáneas cifradas** automáticas (máx. 15, una por hora). Si la bóveda no se puede leer, se restaura la instantánea legible más reciente; si ninguna lo es, la app no escribe nada hasta que el problema se resuelva.

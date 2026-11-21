@@ -23,6 +23,7 @@ import com.ferlagod.mis2fa.data.local.AppSettings
 import com.ferlagod.mis2fa.data.local.LockTimeout
 import com.ferlagod.mis2fa.data.local.SortOrder
 import com.ferlagod.mis2fa.data.local.ThemeMode
+import com.ferlagod.mis2fa.data.remote.ServiceIcons
 import com.ferlagod.mis2fa.data.sync.SyncError
 import com.ferlagod.mis2fa.data.sync.SyncException
 import com.ferlagod.mis2fa.data.sync.SyncManager
@@ -38,6 +39,10 @@ import com.ferlagod.mis2fa.otp.OtpAuthUri
 import com.ferlagod.mis2fa.util.QrCodes
 import com.ferlagod.mis2fa.util.TextSearch
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -178,6 +183,43 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         guarded {
             val token = repository.find(id) ?: return@guarded
             repository.setPinned(id, !token.pinned)
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Iconos de los servicios (solo a petición del usuario)
+    // ------------------------------------------------------------------
+
+    /** Descarga el icono de [domain] desde su web. */
+    suspend fun fetchIcon(domain: String): String? = try {
+        ServiceIcons.fetch(domain)
+    } catch (e: Exception) {
+        Log.i(TAG, "No se pudo descargar el icono", e)
+        null
+    }
+
+    /** Cuentas activas sin icono y con un emisor del que se puede adivinar el dominio. */
+    fun accountsWithoutIcon(): List<Token> =
+        repository.snapshot().active.filter { it.icon == null && ServiceIcons.guessDomain(it.issuer) != null }
+
+    /**
+     * Busca el icono de cada cuenta que no lo tiene, a partir de su emisor. Cada dominio se pide
+     * una sola vez y como mucho 4 a la vez.
+     */
+    fun fetchMissingIcons() = viewModelScope.launch {
+        if (_busy.value) return@launch
+        _busy.value = true
+        try {
+            val pending = accountsWithoutIcon()
+            val byDomain = pending.groupBy { ServiceIcons.guessDomain(it.issuer)!! }
+            val limit = Semaphore(4)
+            val found = byDomain.map { (domain, tokens) ->
+                async { limit.withPermit { fetchIcon(domain)?.let { icon -> tokens.map { it.id to icon } } } }
+            }.awaitAll().filterNotNull().flatten().toMap()
+            guarded { if (found.isNotEmpty()) repository.setIcons(found) }
+            emit(UiEvent.Text(R.string.icons_fetched, listOf(found.size, pending.size)))
+        } finally {
+            _busy.value = false
         }
     }
 
