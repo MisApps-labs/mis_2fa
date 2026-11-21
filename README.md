@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia: GPL v3" src="https://img.shields.io/badge/licencia-GPLv3-blue.svg"></a>
-  <a href="https://github.com/ferlagod/mis_2fa/actions/workflows/android.yml"><img alt="CI" src="https://github.com/ferlagod/mis_2fa/actions/workflows/android.yml/badge.svg"></a>
+  <a href="https://github.com/MisApps-labs/mis_2fa/actions/workflows/android.yml"><img alt="CI" src="https://github.com/MisApps-labs/mis_2fa/actions/workflows/android.yml/badge.svg"></a>
   <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3DDC84.svg">
 </p>
 
@@ -18,7 +18,7 @@
 
 Mis 2FA genera los códigos de 6 u 8 cifras que te piden las webs al iniciar sesión, como Google Authenticator o Ente Auth. La diferencia: es **software libre (GPL v3)**, no necesita cuenta en ningún servicio, y si quieres guarda una copia **cifrada de extremo a extremo** en tu Nextcloud. Si pierdes el móvil, instalas la app en otro, conectas tu Nextcloud y tus códigos vuelven.
 
-Forma parte de la familia **Mis Apps** junto a [Mis Notas](https://github.com/ferlagod/mis_notas) y Mis Podcast.
+Forma parte de la familia **Mis Apps** junto a [Mis Notas](https://github.com/MisApps-labs/mis_notas) y Mis Podcast.
 
 ## Características
 
@@ -60,7 +60,7 @@ Varias capas, de la más cercana a la más lejana:
 
 ## Instalación
 
-1. Descarga el último `.apk` desde la página de [Releases](https://github.com/ferlagod/mis_2fa/releases).
+1. Descarga el último `.apk` desde la página de [Releases](https://github.com/MisApps-labs/mis_2fa/releases).
 2. Ábrelo en tu teléfono y permite la instalación desde esa fuente si Android te lo pide.
 
 Requisitos: Android 8.0 (API 26) o superior.
@@ -101,7 +101,7 @@ Después de importar, **borra el fichero sin cifrar**.
 Necesitas JDK 21 y el Android SDK (Android Studio lo instala todo).
 
 ```bash
-git clone https://github.com/ferlagod/mis_2fa.git
+git clone https://github.com/MisApps-labs/mis_2fa.git
 cd mis_2fa
 ./gradlew assembleDebug          # APK de depuración en app/build/outputs/apk/debug/
 ./gradlew testDebugUnitTest      # tests unitarios (incluye los vectores oficiales de RFC 4226 y 6238)

@@ -2,7 +2,7 @@
 <!--
   SPDX-License-Identifier: GPL-3.0-or-later
   Copyright (C) 2026 ferlagod
-  Mis 2FA — https://github.com/ferlagod/mis_2fa
+  Mis 2FA — https://github.com/MisApps-labs/mis_2fa
 -->
 <resources>
     <color name="window_background">#FFF2F2F7</color>

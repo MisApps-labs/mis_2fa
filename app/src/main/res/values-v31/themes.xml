@@ -2,7 +2,7 @@
 <!--
   SPDX-License-Identifier: GPL-3.0-or-later
   Copyright (C) 2026 ferlagod
-  Mis 2FA — https://github.com/ferlagod/mis_2fa
+  Mis 2FA — https://github.com/MisApps-labs/mis_2fa
 -->
 <resources>
     <!-- Android 12+: pantalla de arranque con el azul del logo, como el resto de Mis Apps. -->
