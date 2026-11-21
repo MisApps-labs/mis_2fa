@@ -1,4 +1,4 @@
-<b>Mis 2FA</b> genera los códigos de verificación en dos pasos que te piden las webs al iniciar sesión, como Google Authenticator o Ente Auth, pero es <b>software libre</b> y guarda una copia <b>cifrada de extremo a extremo</b> en tu propio servidor Nextcloud. Si pierdes el móvil, tus códigos no se pierden.
+<b>Mis 2FA</b> genera los códigos de verificación en dos pasos que te piden las webs al iniciar sesión. Es <b>software libre</b> y guarda una copia <b>cifrada de extremo a extremo</b> en tu propio servidor Nextcloud. Si pierdes el móvil, tus códigos no se pierden.
 
 <b>Sin publicidad ni seguimiento</b>
 Sin anuncios, sin telemetría, sin cuentas obligatorias y sin servicios de Google. Funciona sin conexión; la sincronización es opcional. Código 100 % libre bajo licencia GNU GPLv3.
